@@ -1,43 +1,135 @@
-# Astro Starter Kit: Minimal
+# Astro CMS Boilerplate
 
-```sh
-npm create astro@latest -- --template minimal
+A personal boilerplate for spinning up marketing websites quickly. Built with Astro, Keystatic CMS, Tailwind CSS v4, and Svelte.
+
+## Stack
+
+| Layer | Choice |
+|-------|--------|
+| Framework | Astro 5 |
+| Styling | Tailwind CSS v4 |
+| CMS | Keystatic (local mode → GitHub mode) |
+| Interactive components | Svelte islands |
+| Adapter | Node.js (swap for Vercel in production) |
+
+## Getting Started
+
+```bash
+npm install
+git init && git add . && git commit -m "Initial commit"
+npm run dev
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+> **Note:** A git repository with at least one commit is required for Keystatic to work.
 
-## 🚀 Project Structure
+Visit `http://localhost:4321` for the site and `http://localhost:4321/keystatic` for the CMS admin.
 
-Inside of your Astro project, you'll see the following folders and files:
+## Project Structure
 
-```text
-/
-├── public/
+```
+astro-boilerplate/
+├── content/                   # Content files managed by Keystatic
+│   ├── posts/                 # Blog posts (.mdoc)
+│   ├── team/                  # Team member profiles (.yaml)
+│   ├── services/              # Service pages (.mdoc)
+│   └── singletons/            # Homepage + site settings (.yaml)
+├── public/                    # Static assets
+│   └── images/
 ├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+│   ├── components/
+│   │   ├── islands/           # Svelte interactive islands
+│   │   │   └── MobileMenu.svelte
+│   │   ├── sections/          # Page sections (Hero, Features, Team, Banner)
+│   │   └── ui/                # UI primitives (Header, Footer)
+│   ├── layouts/
+│   │   ├── BaseLayout.astro   # HTML shell, SEO meta, OG tags
+│   │   ├── LandingLayout.astro
+│   │   └── BlogLayout.astro
+│   ├── pages/
+│   └── styles/
+│       └── global.css         # Tailwind entry point
+├── astro.config.mjs
+├── keystatic.config.ts        # CMS schema (collections + singletons)
+└── .env.example               # Environment variables for Phase 2
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## CMS Content Schema
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+### Collections
+| Collection | Description |
+|-----------|-------------|
+| `posts` | Blog posts with title, date, author, cover image, and Markdoc content |
+| `team` | Team members with name, role, bio, and photo |
+| `services` | Services with title, summary, icon, and Markdoc content |
 
-Any static assets, like images, can be placed in the `public/` directory.
+### Singletons
+| Singleton | Description |
+|-----------|-------------|
+| `homepage` | Hero section content (headline, CTA, image) |
+| `settings` | Site name, description, logo, social links, footer text |
 
-## 🧞 Commands
+## Available Components
 
-All commands are run from the root of the project, from a terminal:
+| Component | Type | Description |
+|-----------|------|-------------|
+| `Hero` | Section | Full-width hero with optional image, headline, CTA buttons |
+| `Features` | Section | 2/3/4 column feature grid with icons |
+| `Team` | Section | Team member cards grid |
+| `Banner` | Section | Dismissible info/warning/success banner |
+| `Header` | UI | Sticky nav with desktop links and mobile menu |
+| `Footer` | UI | 3-column footer with links and social |
+| `MobileMenu` | Svelte island | Animated slide-in mobile nav drawer |
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+## Commands
 
-## 👀 Want to learn more?
+```bash
+npm run dev        # Start dev server + Keystatic admin at /keystatic
+npm run build      # Build for production
+npm run preview    # Preview production build locally
+```
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+## Upgrading to Production (Phase 2)
+
+To enable the Keystatic admin in production via Vercel:
+
+1. **Install Vercel adapter**
+   ```bash
+   npm install @astrojs/vercel
+   ```
+
+2. **Update `astro.config.mjs`**
+   ```js
+   import vercel from '@astrojs/vercel'
+   // replace: adapter: node({ mode: 'standalone' })
+   adapter: vercel()
+   ```
+
+3. **Update `keystatic.config.ts`**
+   ```ts
+   storage: {
+     kind: 'github',
+     repo: 'your-org/your-repo',
+   }
+   ```
+
+4. **Create a GitHub OAuth App**
+   - Go to GitHub → Settings → Developer settings → OAuth Apps
+   - Set callback URL to: `https://your-domain.com/api/keystatic/github/oauth/callback`
+
+5. **Set environment variables in Vercel**
+   ```
+   KEYSTATIC_GITHUB_CLIENT_ID=
+   KEYSTATIC_GITHUB_CLIENT_SECRET=
+   KEYSTATIC_SECRET=
+   ```
+
+6. Deploy — the `/keystatic` admin will be live in production.
+
+## Using This Boilerplate for a New Site
+
+1. Fork or copy this repo into a new GitHub repository
+2. Clone it locally
+3. Run `npm install && npm run dev`
+4. Update `site` in `astro.config.mjs` to your domain
+5. Edit content via `http://localhost:4321/keystatic`
+6. Push to deploy

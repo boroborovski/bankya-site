@@ -13,7 +13,10 @@ export default defineConfig({
   output: 'server',
   adapter: node({ mode: 'standalone' }),
   vite: {
-    plugins: [tailwindcss()]
+    plugins: [tailwindcss()],
+    resolve: {
+      dedupe: ['yjs', 'react', 'react-dom'],
+    },
   },
   integrations: [react(), svelte(), keystatic()]
 });
