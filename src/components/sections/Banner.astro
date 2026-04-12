@@ -1,0 +1,38 @@
+---
+interface Props {
+  text: string
+  linkLabel?: string
+  linkUrl?: string
+  type?: 'info' | 'warning' | 'success'
+  dismissible?: boolean
+}
+
+const { text, linkLabel, linkUrl, type = 'info', dismissible = false } = Astro.props
+
+const styles = {
+  info: 'bg-blue-50 text-blue-800 border-blue-200',
+  warning: 'bg-yellow-50 text-yellow-800 border-yellow-200',
+  success: 'bg-green-50 text-green-800 border-green-200',
+}
+---
+
+<div
+  class={`border px-4 py-3 text-sm flex items-center justify-center gap-4 ${styles[type]}`}
+  data-banner
+>
+  <span>{text}</span>
+  {linkLabel && linkUrl && (
+    <a href={linkUrl} class="font-semibold underline hover:no-underline">
+      {linkLabel}
+    </a>
+  )}
+  {dismissible && (
+    <button
+      class="ml-auto text-current opacity-60 hover:opacity-100"
+      aria-label="Dismiss"
+      onclick="this.closest('[data-banner]').remove()"
+    >
+      &times;
+    </button>
+  )}
+</div>

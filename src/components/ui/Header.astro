@@ -1,0 +1,47 @@
+---
+import MobileMenu from '../islands/MobileMenu.svelte'
+
+const navItems = [
+  { label: 'Home', url: '/' },
+  { label: 'Services', url: '/services' },
+  { label: 'Team', url: '/team' },
+  { label: 'Blog', url: '/blog' },
+  { label: 'Contact', url: '/contact' },
+]
+---
+
+<header class="sticky top-0 z-50 bg-white border-b border-gray-100 shadow-sm">
+  <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-16">
+      <!-- Logo -->
+      <a href="/" class="text-xl font-bold text-gray-900">
+        YourBrand
+      </a>
+
+      <!-- Desktop nav -->
+      <ul class="hidden md:flex items-center gap-8">
+        {navItems.map((item) => (
+          <li>
+            <a
+              href={item.url}
+              class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
+            >
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+
+      <!-- CTA + Mobile toggle -->
+      <div class="flex items-center gap-4">
+        <a
+          href="/contact"
+          class="hidden md:inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg hover:bg-gray-700 transition-colors"
+        >
+          Get in touch
+        </a>
+        <MobileMenu navItems={navItems} client:load />
+      </div>
+    </div>
+  </nav>
+</header>

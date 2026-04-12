@@ -1,0 +1,37 @@
+---
+import LandingLayout from '../layouts/LandingLayout.astro'
+import Hero from '../components/sections/Hero.astro'
+import Features from '../components/sections/Features.astro'
+import Banner from '../components/sections/Banner.astro'
+
+const features = [
+  {
+    icon: '⚡',
+    title: 'Lightning Fast',
+    description: 'Built with Astro for zero JS overhead on static pages. Ships only what is needed.',
+  },
+  {
+    icon: '✏️',
+    title: 'Easy to Edit',
+    description: 'Content managed via Keystatic CMS — edit markdown files locally or in the browser.',
+  },
+  {
+    icon: '🎨',
+    title: 'Fully Customisable',
+    description: 'Tailwind CSS v4 with no lock-in. Change anything, swap components freely.',
+  },
+]
+---
+
+<Banner text="Welcome to your new boilerplate!" linkLabel="Edit in CMS" linkUrl="/keystatic" type="info" dismissible />
+<LandingLayout title="Home — YourBrand" description="A fast, flexible website built with Astro.">
+  <Hero
+    headline="Build websites fast."
+    subheadline="A clean, flexible boilerplate powered by Astro, Keystatic CMS, Tailwind CSS, and Svelte."
+    ctaLabel="Get started"
+    ctaUrl="/contact"
+    secondaryCtaLabel="Learn more"
+    secondaryCtaUrl="/services"
+  />
+  <Features heading="Why this stack?" subheading="Everything you need, nothing you don't." features={features} />
+</LandingLayout>
