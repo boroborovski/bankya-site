@@ -1,37 +1,164 @@
 ---
+import { createReader } from '@keystatic/core/reader'
+import keystaticConfig from '../../keystatic.config'
 import LandingLayout from '../layouts/LandingLayout.astro'
-import Hero from '../components/sections/Hero.astro'
+import HeroSlider from '../components/islands/HeroSlider.svelte'
+import Stats from '../components/sections/Stats.astro'
+import ContentSection from '../components/sections/ContentSection.astro'
 import Features from '../components/sections/Features.astro'
-import Banner from '../components/sections/Banner.astro'
+import CTASection from '../components/sections/CTASection.astro'
+import BlogGrid from '../components/sections/BlogGrid.astro'
 
-const features = [
-  {
-    icon: '⚡',
-    title: 'Lightning Fast',
-    description: 'Built with Astro for zero JS overhead on static pages. Ships only what is needed.',
-  },
-  {
-    icon: '✏️',
-    title: 'Easy to Edit',
-    description: 'Content managed via Keystatic CMS — edit markdown files locally or in the browser.',
-  },
-  {
-    icon: '🎨',
-    title: 'Fully Customisable',
-    description: 'Tailwind CSS v4 with no lock-in. Change anything, swap components freely.',
-  },
+const reader = createReader(process.cwd(), keystaticConfig)
+
+const [homepage, servicesRaw, postsRaw] = await Promise.all([
+  reader.singletons.homepage.read(),
+  reader.collections.services.all(),
+  reader.collections.posts.all(),
+])
+
+// Hero slides — CMS or hardcoded fallback
+const slides = homepage?.heroSlides?.length
+  ? homepage.heroSlides.map((s) => ({
+      headline: s.headline,
+      subheadline: s.subheadline || undefined,
+      ctaLabel: s.ctaLabel || undefined,
+      ctaUrl: s.ctaUrl || undefined,
+      secondaryCtaLabel: s.secondaryCtaLabel || undefined,
+      secondaryCtaUrl: s.secondaryCtaUrl || undefined,
+      image: s.image || undefined,
+    }))
+  : [
+      {
+        headline: 'Рехабилитация с природна минерална вода',
+        subheadline: 'Болница за продължително лечение в сърцето на Банкя — природа, грижа и съвременна медицина.',
+        ctaLabel: 'Запишете час',
+        ctaUrl: '/kontakti',
+        secondaryCtaLabel: 'Научете повече',
+        secondaryCtaUrl: '/za-nas',
+      },
+      {
+        headline: 'Комплексна рехабилитация след инсулт и травми',
+        subheadline: 'Индивидуални програми за възстановяване изготвени от специализиран медицински екип.',
+        ctaLabel: 'Нашите дейности',
+        ctaUrl: '/deynosti',
+      },
+      {
+        headline: 'Прием по клинични пътеки и НЗОК',
+        subheadline: 'Лечение, финансирано от Националната здравноосигурителна каса и Националния осигурителен институт.',
+        ctaLabel: 'Информация за пациенти',
+        ctaUrl: '/za-pacienta',
+      },
+    ]
+
+// Stats — CMS or fallback
+const stats = homepage?.stats?.length
+  ? homepage.stats.map((s) => ({ value: s.value, label: s.label }))
+  : [
+      { value: '200+', label: 'Легла' },
+      { value: '50+', label: 'Години опит' },
+      { value: '6', label: 'Направления' },
+      { value: '30+', label: 'Специалисти' },
+    ]
+
+// About section — CMS or fallback
+const aboutHeading = homepage?.aboutHeading || 'За БПЛР–Банкя'
+const aboutBody = homepage?.aboutBody || 'Болницата за продължително лечение и рехабилитация – Банкя е специализирано лечебно заведение с над петдесетгодишна история, намиращо се в живописния град Банкя, известен с уникалните си минерални извори.'
+const aboutBody2 = homepage?.aboutBody2 || 'Предлагаме комплексна рехабилитация за пациенти след инсулт, травми, сърдечни и ортопедични заболявания, като съчетаваме природните дадености на района с модерни методи на лечение и висококвалифициран медицински екип.'
+const aboutBullets = homepage?.aboutBullets?.map((b) => b.text) ?? [
+  'Акредитирано лечебно заведение',
+  'Прием по клинични пътеки и НЗОК',
+  'Природна минерална вода от Банкя',
+  'Индивидуален подход към всеки пациент',
 ]
+
+// Section visibility (default true if field missing)
+const showStats    = homepage?.showStats    ?? true
+const showAbout    = homepage?.showAbout    ?? true
+const showServices = homepage?.showServices ?? true
+const showCta      = homepage?.showCta      ?? true
+const showBlog     = homepage?.showBlog     ?? true
+
+// CTA — CMS or fallback
+const ctaHeading = homepage?.ctaHeading || 'Готови сте да започнете?'
+const ctaBody = homepage?.ctaBody || 'Свържете се с нас за информация за прием, клинични пътеки и свободни места.'
+
+// Services — CMS or fallback
+const services = servicesRaw.length
+  ? servicesRaw
+      .sort((a, b) => (a.entry.order ?? 99) - (b.entry.order ?? 99))
+      .map((s) => ({
+        icon: s.entry.icon || '🏥',
+        title: s.entry.title,
+        description: s.entry.summary || '',
+      }))
+  : [
+      { icon: '🧠', title: 'Неврологична рехабилитация', description: 'Възстановяване след инсулт, черепно-мозъчна травма и дегенеративни неврологични заболявания.' },
+      { icon: '🦴', title: 'Ортопедична рехабилитация', description: 'Рехабилитация след фрактури, ставни протези, наранявания на опорно-двигателния апарат.' },
+      { icon: '❤️', title: 'Кардиологична рехабилитация', description: 'Програми за възстановяване след сърдечни интервенции и миокарден инфаркт.' },
+      { icon: '💧', title: 'Балнеолечение', description: 'Процедури с природна минерална вода от Банкя — вани, душове, подводен масаж.' },
+      { icon: '🏃', title: 'Физиотерапия', description: 'Индивидуални и групови упражнения, кинезитерапия, мануална терапия.' },
+      { icon: '🔬', title: 'Диагностика', description: 'Функционална диагностика, ЕКГ, лабораторни изследвания на място.' },
+    ]
+
+// Posts
+const posts = postsRaw.map((p) => ({
+  title: p.entry.title,
+  slug: p.slug,
+  date: p.entry.publishDate ?? undefined,
+  summary: p.entry.summary ?? undefined,
+  image: p.entry.coverImage ?? undefined,
+}))
 ---
 
-<Banner text="Welcome to your new boilerplate!" linkLabel="Edit in CMS" linkUrl="/keystatic" type="info" dismissible />
-<LandingLayout title="Home — YourBrand" description="A fast, flexible website built with Astro.">
-  <Hero
-    headline="Build websites fast."
-    subheadline="A clean, flexible boilerplate powered by Astro, Keystatic CMS, Tailwind CSS, and Svelte."
-    ctaLabel="Get started"
-    ctaUrl="/contact"
-    secondaryCtaLabel="Learn more"
-    secondaryCtaUrl="/services"
-  />
-  <Features heading="Why this stack?" subheading="Everything you need, nothing you don't." features={features} />
+<LandingLayout
+  title="БПЛР–БАНКЯ — Болница за продължително лечение и рехабилитация"
+  description="Специализирана болница за рехабилитация в Банкя. Лечение с минерална вода, физиотерапия, неврологична и ортопедична рехабилитация."
+>
+  <HeroSlider slides={slides} client:load />
+
+  {showStats && <Stats stats={stats} background="white" />}
+
+  {showAbout && (
+    <ContentSection
+      heading={aboutHeading}
+      body={aboutBody}
+      body2={aboutBody2}
+      bullets={aboutBullets}
+      ctaLabel="Научете повече за нас"
+      ctaUrl="/za-nas"
+      background="gray"
+    />
+  )}
+
+  {showServices && (
+    <Features
+      heading="Нашите специалности"
+      subheading="Комплексно лечение и рехабилитация в шест основни направления."
+      features={services}
+      columns={3}
+    />
+  )}
+
+  {showCta && (
+    <CTASection
+      heading={ctaHeading}
+      body={ctaBody}
+      ctaLabel="Запишете час"
+      ctaUrl="/kontakti"
+      secondaryCtaLabel="За пациента"
+      secondaryCtaUrl="/za-pacienta"
+      variant="blue"
+    />
+  )}
+
+  {showBlog && posts.length > 0 && (
+    <BlogGrid
+      heading="Последни новини"
+      posts={posts.slice(0, 3)}
+      ctaLabel="Всички новини"
+      ctaUrl="/novini"
+      background="gray"
+    />
+  )}
 </LandingLayout>

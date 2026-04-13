@@ -1,3 +1,8 @@
+showStats: true
+showAbout: true
+showServices: true
+showCta: true
+showBlog: true
 heroSlides:
   - headline: Рехабилитация с природна минерална вода
     subheadline: Болница за продължително лечение в сърцето на Банкя — природа, грижа и съвременна медицина.
