@@ -1,44 +1,111 @@
 ---
+import { createReader } from '@keystatic/core/reader'
+import keystaticConfig from '../../../keystatic.config'
+import TopBar from './TopBar.astro'
 import MobileMenu from '../islands/MobileMenu.svelte'
 
+const reader = createReader(process.cwd(), keystaticConfig)
+const settings = await reader.singletons.settings.read()
+
+const phone = settings?.phone || '02 997 7194'
+const email = settings?.email || 'bbbankya@abv.bg'
+const hours = settings?.hours || 'Пон – Пет: 08:00 – 18:00'
+
 const navItems = [
-  { label: 'Home', url: '/' },
-  { label: 'Services', url: '/services' },
-  { label: 'Team', url: '/team' },
-  { label: 'Blog', url: '/blog' },
-  { label: 'Contact', url: '/contact' },
+  { label: 'Начало', url: '/' },
+  { label: 'За нас', url: '/za-nas' },
+  {
+    label: 'За пациента',
+    url: '/za-pacienta',
+    subItems: [
+      { label: 'Обща информация', url: '/za-pacienta/obshta-informatsiya' },
+      { label: 'Клинични пътеки', url: '/za-pacienta/klinichni-pateki' },
+      { label: 'НОИ', url: '/za-pacienta/noi' },
+      { label: 'Платен прием', url: '/za-pacienta/platen-priem' },
+      { label: 'Военен контингент', url: '/za-pacienta/voenen-kontingent' },
+    ],
+  },
+  { label: 'Дейности', url: '/deynosti' },
+  { label: 'Галерия', url: '/galeriya' },
+  { label: 'Новини', url: '/novini' },
+  { label: 'Контакти', url: '/kontakti' },
 ]
+
+const currentPath = Astro.url.pathname
 ---
+
+<TopBar phone={phone} email={email} hours={hours} />
 
 <header class="sticky top-0 z-50 bg-white border-b border-gray-100 shadow-sm">
   <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex justify-between items-center h-16">
+
       <!-- Logo -->
-      <a href="/" class="text-xl font-bold text-gray-900">
-        YourBrand
+      <a href="/" class="flex items-center gap-2.5 shrink-0">
+        {settings?.logo ? (
+          <img src={settings.logo} alt={settings.siteName || 'БПЛР–БАНКЯ'} class="h-9 w-auto" />
+        ) : (
+          <span class="text-blue-700 font-extrabold text-lg tracking-tight leading-tight">
+            БПЛР<span class="text-gray-900">–БАНКЯ</span>
+          </span>
+        )}
       </a>
 
       <!-- Desktop nav -->
-      <ul class="hidden md:flex items-center gap-8">
-        {navItems.map((item) => (
-          <li>
-            <a
-              href={item.url}
-              class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
-            >
-              {item.label}
-            </a>
-          </li>
-        ))}
+      <ul class="hidden lg:flex items-center gap-1">
+        {navItems.map((item) =>
+          item.subItems ? (
+            <li class="group relative">
+              <a
+                href={item.url}
+                class={`inline-flex items-center gap-1 px-3 py-2 text-sm font-medium rounded-md transition-colors ${
+                  currentPath.startsWith(item.url)
+                    ? 'text-blue-700 bg-blue-50'
+                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                }`}
+              >
+                {item.label}
+                <svg class="w-3.5 h-3.5 text-gray-400 group-hover:text-gray-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
+                </svg>
+              </a>
+              <ul class="absolute top-full left-0 mt-1 w-52 bg-white rounded-xl shadow-lg border border-gray-100 py-1.5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 z-50">
+                {item.subItems.map((sub) => (
+                  <li>
+                    <a
+                      href={sub.url}
+                      class="block px-4 py-2.5 text-sm text-gray-600 hover:text-blue-700 hover:bg-blue-50 transition-colors"
+                    >
+                      {sub.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </li>
+          ) : (
+            <li>
+              <a
+                href={item.url}
+                class={`inline-flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors ${
+                  currentPath === item.url || (item.url !== '/' && currentPath.startsWith(item.url))
+                    ? 'text-blue-700 bg-blue-50'
+                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                }`}
+              >
+                {item.label}
+              </a>
+            </li>
+          )
+        )}
       </ul>
 
       <!-- CTA + Mobile toggle -->
-      <div class="flex items-center gap-4">
+      <div class="flex items-center gap-3">
         <a
-          href="/contact"
-          class="hidden md:inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg hover:bg-gray-700 transition-colors"
+          href="/kontakti"
+          class="hidden lg:inline-flex items-center px-4 py-2 text-sm font-semibold text-white bg-blue-700 rounded-lg hover:bg-blue-800 transition-colors"
         >
-          Get in touch
+          Запишете час
         </a>
         <MobileMenu navItems={navItems} client:load />
       </div>

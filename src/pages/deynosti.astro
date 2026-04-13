@@ -1,0 +1,76 @@
+---
+import { createReader } from '@keystatic/core/reader'
+import keystaticConfig from '../../keystatic.config'
+import LandingLayout from '../layouts/LandingLayout.astro'
+import Hero from '../components/sections/Hero.astro'
+import Features from '../components/sections/Features.astro'
+import ContentSection from '../components/sections/ContentSection.astro'
+import CTASection from '../components/sections/CTASection.astro'
+
+const reader = createReader(process.cwd(), keystaticConfig)
+const servicesRaw = await reader.collections.services.all()
+
+const services = servicesRaw.length
+  ? servicesRaw
+      .sort((a, b) => (a.entry.order ?? 99) - (b.entry.order ?? 99))
+      .map((s) => ({
+        icon: s.entry.icon || '🏥',
+        title: s.entry.title,
+        description: s.entry.summary || '',
+      }))
+  : [
+      { icon: '🧠', title: 'Неврологична рехабилитация', description: 'Специализирани програми за възстановяване след инсулт, черепно-мозъчна травма, паркинсонова болест и дегенеративни неврологични заболявания.' },
+      { icon: '🦴', title: 'Ортопедична рехабилитация', description: 'Рехабилитация след фрактури, тотална ставна протеза (ТЕП), наранявания на ставите и гръбначния стълб.' },
+      { icon: '❤️', title: 'Кардиологична рехабилитация', description: 'Програми за пациенти след миокарден инфаркт, аорто-коронарен байпас и сърдечна недостатъчност.' },
+      { icon: '💧', title: 'Балнеолечение', description: 'Лечебни процедури с природна минерална вода от Банкя — вани, душ-масаж, подводна гимнастика.' },
+      { icon: '🏋️', title: 'Кинезитерапия', description: 'Индивидуални и групови терапевтични упражнения, мануална терапия, механотерапия.' },
+      { icon: '⚡', title: 'Физикална терапия', description: 'Електролечение, магнитотерапия, ултразвук, лазертерапия, парафинотерапия и криотерапия.' },
+      { icon: '🤲', title: 'Масаж и мануална терапия', description: 'Класически лечебен масаж, рефлексотерапия, постизометрична релаксация.' },
+      { icon: '🔬', title: 'Диагностика', description: 'Функционална диагностика, ЕКГ, ехокардиография, лабораторни изследвания и консултации на място.' },
+      { icon: '🧘', title: 'Ерготерапия', description: 'Функционална рехабилитация за възстановяване на ежедневните умения след неврологични инциденти.' },
+    ]
+---
+
+<LandingLayout
+  title="Дейности — БПЛР–БАНКЯ"
+  description="Неврологична, ортопедична и кардиологична рехабилитация, балнеолечение, физиотерапия и кинезитерапия в БПЛР–Банкя."
+>
+  <Hero
+    headline="Нашите дейности"
+    subheadline="Комплексна рехабилитация, обединяваща природните ресурси на Банкя с модерни медицински методи и висококвалифициран екип."
+    ctaLabel="Запишете час"
+    ctaUrl="/kontakti"
+    secondaryCtaLabel="За пациента"
+    secondaryCtaUrl="/za-pacienta"
+  />
+
+  <Features
+    heading="Специалности и процедури"
+    subheading="Широк спектър от рехабилитационни услуги, покриващи основните нужди на пациентите след остри и хронични заболявания."
+    features={services}
+    columns={3}
+  />
+
+  <ContentSection
+    heading="Методология на лечение"
+    body="Всеки пациент преминава първоначален преглед и функционална оценка от специалист. Изготвя се индивидуален рехабилитационен план, съобразен с диагнозата, общото здравословно състояние и целите на пациента."
+    body2="Лечението е мултидисциплинарно — лекари, рехабилитатори, кинезитерапевти и медицински сестри работят в екип. Ефектът се проследява редовно и планът се актуализира при нужда."
+    bullets={[
+      'Първоначален преглед и функционална оценка',
+      'Индивидуален рехабилитационен план',
+      'Мултидисциплинарен екипен подход',
+      'Редовен мониторинг и корекция на терапията',
+    ]}
+    background="gray"
+  />
+
+  <CTASection
+    heading="Запишете се за консултация"
+    body="Свържете се с нас, за да разберете дали БПЛР–Банкя е подходящото място за вашата рехабилитация."
+    ctaLabel="Запишете час"
+    ctaUrl="/kontakti"
+    secondaryCtaLabel="За пациента"
+    secondaryCtaUrl="/za-pacienta"
+    variant="blue"
+  />
+</LandingLayout>

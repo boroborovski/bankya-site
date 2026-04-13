@@ -110,6 +110,8 @@ astro-boilerplate/
 - **Don't manually create Keystatic routes** — the `@keystatic/astro` integration auto-registers `/keystatic/[...params]` and `/api/keystatic/[...params]`; creating them manually causes route collision errors
 - **React integration order matters** — `react()` must come before `keystatic()` in the integrations array
 - **Vite cache** — after config changes always clear `node_modules/.vite` and restart dev server
+- **`@keystatic/astro` must be excluded from Vite optimization** — add `optimizeDeps: { exclude: ['@keystatic/astro'] }` to the Vite config block, otherwise Vite pre-bundling fails with `Could not resolve "virtual:keystatic-config"` on dev start
+- **WSL2 + Windows drive file watching** — if project lives on `/mnt/*`, add `server: { watch: { usePolling: true, interval: 1000 } }` to Vite config, otherwise new files added by Keystatic (images etc.) won't be served until dev server restart
 
 ---
 

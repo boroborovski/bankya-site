@@ -1,0 +1,55 @@
+---
+interface Stat {
+  value: string
+  label: string
+}
+
+interface Props {
+  heading?: string
+  subheading?: string
+  stats: Stat[]
+  background?: 'white' | 'gray' | 'blue'
+}
+
+const { heading, subheading, stats, background = 'gray' } = Astro.props
+
+const bg = { white: 'bg-white', gray: 'bg-gray-50', blue: 'bg-blue-700' }[background]
+const textPrimary = background === 'blue' ? 'text-white' : 'text-gray-900'
+const textSub = background === 'blue' ? 'text-blue-100' : 'text-gray-500'
+const textLabel = background === 'blue' ? 'text-blue-200' : 'text-gray-500'
+
+const cols =
+  stats.length <= 2
+    ? 'sm:grid-cols-2'
+    : stats.length === 3
+      ? 'sm:grid-cols-3'
+      : 'sm:grid-cols-2 lg:grid-cols-4'
+---
+
+<section class={`${bg} py-16`}>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    {(heading || subheading) && (
+      <div class="text-center mb-12">
+        {heading && (
+          <h2 class={`text-3xl sm:text-4xl font-extrabold tracking-tight ${textPrimary}`}>
+            {heading}
+          </h2>
+        )}
+        {subheading && (
+          <p class={`mt-4 text-lg ${textSub} max-w-2xl mx-auto`}>{subheading}</p>
+        )}
+      </div>
+    )}
+
+    <dl class={`grid grid-cols-2 gap-8 ${cols} text-center`}>
+      {stats.map((stat) => (
+        <div class="flex flex-col items-center justify-center">
+          <dt class={`text-4xl md:text-5xl font-extrabold tracking-tight ${textPrimary}`}>
+            {stat.value}
+          </dt>
+          <dd class={`mt-2 text-base font-medium ${textLabel}`}>{stat.label}</dd>
+        </div>
+      ))}
+    </dl>
+  </div>
+</section>

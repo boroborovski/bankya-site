@@ -1,0 +1,35 @@
+---
+import LandingLayout from '../../layouts/LandingLayout.astro'
+import Hero from '../../components/sections/Hero.astro'
+import BlogGrid from '../../components/sections/BlogGrid.astro'
+
+// Read posts from Keystatic when content is available
+let posts = []
+try {
+  const { createReader } = await import('@keystatic/core/reader')
+  const keystaticConfig = (await import('../../../keystatic.config')).default
+  const reader = createReader(process.cwd(), keystaticConfig)
+  const raw = await reader.collections.posts.all()
+  posts = raw.map((p) => ({
+    title: p.entry.title,
+    slug: p.slug,
+    date: p.entry.publishDate ?? undefined,
+    summary: p.entry.summary ?? undefined,
+    author: p.entry.author ?? undefined,
+  }))
+} catch {
+  // No content yet
+}
+---
+
+<LandingLayout
+  title="Новини — БПЛР–БАНКЯ"
+  description="Последни новини и обяви от Болница за продължително лечение и рехабилитация Банкя."
+>
+  <Hero
+    headline="Новини"
+    subheadline="Актуална информация за дейността на болницата, нови услуги и важни съобщения."
+  />
+
+  <BlogGrid posts={posts} background="white" />
+</LandingLayout>

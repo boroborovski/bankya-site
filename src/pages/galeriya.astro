@@ -1,0 +1,34 @@
+---
+import { createReader } from '@keystatic/core/reader'
+import keystaticConfig from '../../keystatic.config'
+import LandingLayout from '../layouts/LandingLayout.astro'
+import Hero from '../components/sections/Hero.astro'
+import Gallery from '../components/islands/Gallery.svelte'
+
+const reader = createReader(process.cwd(), keystaticConfig)
+const galleryData = await reader.singletons.gallery.read()
+
+const images = (galleryData?.images ?? [])
+  .map((g) => ({
+    src: g.image ?? '',
+    alt: g.alt || '',
+    caption: g.caption || undefined,
+  }))
+  .filter((g) => g.src)
+---
+
+<LandingLayout
+  title="Галерия — БПЛР–БАНКЯ"
+  description="Снимки на болничната база, отделенията и прилежащата среда на БПЛР–Банкя."
+>
+  <Hero
+    headline="Галерия"
+    subheadline="Разгледайте нашата болнична база, рехабилитационните зали, балнеологичните съоръжения и красивата природна среда на Банкя."
+  />
+
+  <section class="bg-white py-16 sm:py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <Gallery images={images} client:load />
+    </div>
+  </section>
+</LandingLayout>

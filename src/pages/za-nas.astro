@@ -1,0 +1,140 @@
+---
+import { createReader } from '@keystatic/core/reader'
+import keystaticConfig from '../../keystatic.config'
+import LandingLayout from '../layouts/LandingLayout.astro'
+import Hero from '../components/sections/Hero.astro'
+import ContentSection from '../components/sections/ContentSection.astro'
+import Stats from '../components/sections/Stats.astro'
+import Timeline from '../components/sections/Timeline.astro'
+import Team from '../components/sections/Team.astro'
+import CTASection from '../components/sections/CTASection.astro'
+
+const reader = createReader(process.cwd(), keystaticConfig)
+
+const [aboutPage, teamRaw] = await Promise.all([
+  reader.singletons.aboutPage.read(),
+  reader.collections.team.all(),
+])
+
+// Mission section
+const missionHeading = aboutPage?.missionHeading || 'Нашата мисия'
+const missionBody = aboutPage?.missionBody || 'БПЛР–Банкя е специализирана болница за продължително лечение и рехабилитация, предлагаща комплексна медицинска грижа в уникалната природна среда на Банкя. Нашата мисия е да осигурим пълноценно възстановяване на всеки пациент.'
+const missionBody2 = aboutPage?.missionBody2 || 'Болницата разполага с модерна балнеологична база, физиотерапевтични кабинети и специализирани отделения за неврологична, ортопедична и кардиологична рехабилитация. Лечението се провежда от висококвалифицирани лекари и рехабилитатори.'
+const missionBullets = aboutPage?.missionBullets?.map((b) => b.text) ?? [
+  'Акредитирано лечебно заведение от II ниво',
+  'Договор с НЗОК по клинични пътеки',
+  'Природна минерална вода с доказан лечебен ефект',
+  'Индивидуален рехабилитационен план за всеки пациент',
+  'Комфортно настаняване в болничната база',
+]
+
+// Stats
+const stats = aboutPage?.stats?.length
+  ? aboutPage.stats.map((s) => ({ value: s.value, label: s.label }))
+  : [
+      { value: '1972', label: 'Година на основаване' },
+      { value: '200+', label: 'Легла' },
+      { value: '30+', label: 'Лекари и специалисти' },
+      { value: '5000+', label: 'Пациенти годишно' },
+    ]
+
+// Mineral water section
+const mineralHeading = aboutPage?.mineralHeading || 'Минералната вода на Банкя'
+const mineralBody = aboutPage?.mineralBody || 'Банкя е известна с уникалната си минерална вода — слабо минерализирана, хипотонична, с температура около 37°C. Тя е особено ефективна при заболявания на опорно-двигателния апарат, неврологични и кожни заболявания.'
+const mineralBody2 = aboutPage?.mineralBody2 || 'В болницата се прилагат различни видове балнеолечение: общи и частични вани, подводен душ-масаж, подводна гимнастика и хидрокинезитерапия — всичко в съвременно оборудвана балнеологична база.'
+const mineralBullets = aboutPage?.mineralBullets?.map((b) => b.text) ?? [
+  'Слабо минерализирана вода с оптимална температура',
+  'Показана при ставни, неврологични и кожни заболявания',
+  'Процедури в модерна балнеологична база',
+  'Ефективна в комбинация с физиотерапия',
+]
+
+// Timeline
+const timelineEvents = aboutPage?.timelineEvents?.length
+  ? aboutPage.timelineEvents.map((e) => ({
+      year: e.year,
+      title: e.title,
+      description: e.description,
+    }))
+  : [
+      { year: '1972', title: 'Основаване на болницата', description: 'БПЛР–Банкя е открита като специализирано лечебно заведение към Военномедицинска академия, ползвайки уникалните минерални ресурси на Банкя.' },
+      { year: '1990', title: 'Разширяване на капацитета', description: 'Изграждане на нови отделения и модернизиране на балнеологичните съоръжения. Увеличаване на леглата до над 200.' },
+      { year: '2005', title: 'Акредитация и НЗОК договор', description: 'Болницата получава пълна акредитация и сключва договор с НЗОК за прием по клинични пътеки.' },
+      { year: '2015', title: 'Модернизация на отделенията', description: 'Обновяване на физиотерапевтичната и рехабилитационната база с ново медицинско оборудване.' },
+      { year: '2023', title: 'Разширяване на услугите', description: 'Въвеждане на нови рехабилитационни програми и разширяване на сътрудничеството с водещи медицински центрове.' },
+    ]
+
+// Team — CMS or fallback
+const members = teamRaw.length
+  ? teamRaw.map((m) => ({
+      name: m.entry.name,
+      role: m.entry.role,
+      bio: m.entry.bio ?? undefined,
+      photo: m.entry.photo ?? undefined,
+      linkedin: m.entry.linkedin ?? undefined,
+      twitter: m.entry.twitter ?? undefined,
+    }))
+  : [
+      { name: 'д-р Иван Петров', role: 'Управител / Физиотерапевт', bio: 'Специалист по физикална и рехабилитационна медицина с над 20 години опит.' },
+      { name: 'д-р Мария Стоянова', role: 'Невролог', bio: 'Специалист по неврологична рехабилитация. Ръководи програмите за пациенти след инсулт.' },
+      { name: 'д-р Георги Димитров', role: 'Ортопед-травматолог', bio: 'Опит в рехабилитацията след ставни протези и ортопедични операции.' },
+    ]
+---
+
+<LandingLayout
+  title="За нас — БПЛР–БАНКЯ"
+  description="История, мисия и екип на Болница за продължително лечение и рехабилитация Банкя."
+>
+  <Hero
+    headline="За БПЛР–Банкя"
+    subheadline="Над 50 години грижа за здравето на пациентите, съчетавайки природните богатства на Банкя с модерна медицина."
+    ctaLabel="Запишете час"
+    ctaUrl="/kontakti"
+    secondaryCtaLabel="Нашите дейности"
+    secondaryCtaUrl="/deynosti"
+  />
+
+  <ContentSection
+    heading={missionHeading}
+    body={missionBody}
+    body2={missionBody2}
+    bullets={missionBullets}
+    background="gray"
+  />
+
+  <Stats heading="БПЛР–Банкя в числа" stats={stats} background="white" />
+
+  <ContentSection
+    heading={mineralHeading}
+    body={mineralBody}
+    body2={mineralBody2}
+    bullets={mineralBullets}
+    imagePosition="left"
+    background="gray"
+  />
+
+  <Timeline
+    heading="История"
+    subheading="Повече от пет десетилетия посветени на рехабилитацията."
+    events={timelineEvents}
+    background="white"
+  />
+
+  {members.length > 0 && (
+    <Team
+      heading="Нашият екип"
+      subheading="Квалифицирани специалисти, посветени на вашето възстановяване."
+      members={members}
+    />
+  )}
+
+  <CTASection
+    heading="Свържете се с нас"
+    body="Имате въпроси или искате да запишете час? Нашият екип е на ваше разположение."
+    ctaLabel="Контакти"
+    ctaUrl="/kontakti"
+    secondaryCtaLabel="За пациента"
+    secondaryCtaUrl="/za-pacienta"
+    variant="blue"
+  />
+</LandingLayout>

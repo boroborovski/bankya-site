@@ -1,0 +1,53 @@
+---
+interface TimelineEvent {
+  year: string
+  title: string
+  description: string
+}
+
+interface Props {
+  heading?: string
+  subheading?: string
+  events: TimelineEvent[]
+  background?: 'white' | 'gray'
+}
+
+const { heading, subheading, events, background = 'white' } = Astro.props
+const bg = background === 'gray' ? 'bg-gray-50' : 'bg-white'
+---
+
+<section class={`${bg} py-16 sm:py-20`}>
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    {(heading || subheading) && (
+      <div class="text-center mb-14">
+        {heading && (
+          <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-gray-900">
+            {heading}
+          </h2>
+        )}
+        {subheading && (
+          <p class="mt-4 text-lg text-gray-500 max-w-2xl mx-auto">{subheading}</p>
+        )}
+      </div>
+    )}
+
+    <ol class="relative border-l-2 border-blue-100 ml-4 sm:ml-6">
+      {events.map((event) => (
+        <li class="mb-10 ml-8">
+          <span class="absolute -left-4 flex items-center justify-center w-8 h-8 bg-blue-100 rounded-full ring-4 ring-white">
+            <svg class="w-3.5 h-3.5 text-blue-700" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
+            </svg>
+          </span>
+          <div class="ml-2">
+            <span class="inline-flex items-center px-3 py-1 text-xs font-bold text-blue-700 bg-blue-100 rounded-full mb-2">
+              {event.year}
+            </span>
+            <h3 class="text-lg font-bold text-gray-900 mb-1">{event.title}</h3>
+            <p class="text-gray-500 leading-relaxed">{event.description}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>

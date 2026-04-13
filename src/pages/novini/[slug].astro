@@ -1,0 +1,66 @@
+---
+import BlogLayout from '../../layouts/BlogLayout.astro'
+import { createReader } from '@keystatic/core/reader'
+import keystaticConfig from '../../../keystatic.config'
+
+const { slug } = Astro.params
+
+const reader = createReader(process.cwd(), keystaticConfig)
+const post = await reader.collections.posts.read(slug!)
+
+if (!post) {
+  return Astro.redirect('/novini')
+}
+
+const dateFormatted = post.publishDate
+  ? new Date(post.publishDate).toLocaleDateString('bg-BG', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    })
+  : null
+---
+
+<BlogLayout
+  title={`${post.title} — БПЛР–БАНКЯ`}
+  description={post.summary ?? undefined}
+>
+  <article class="max-w-3xl mx-auto px-4 sm:px-6 py-16">
+    <!-- Back link -->
+    <a
+      href="/novini"
+      class="inline-flex items-center text-sm text-blue-700 hover:text-blue-900 font-medium mb-8 transition-colors"
+    >
+      <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+      </svg>
+      Всички новини
+    </a>
+
+    <!-- Meta -->
+    <div class="mb-6 flex flex-wrap items-center gap-3 text-sm text-gray-400">
+      {dateFormatted && <time>{dateFormatted}</time>}
+      {post.author && (
+        <>
+          <span>·</span>
+          <span>{post.author}</span>
+        </>
+      )}
+    </div>
+
+    <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-900 leading-tight mb-6">
+      {post.title}
+    </h1>
+
+    {post.summary && (
+      <p class="text-xl text-gray-500 leading-relaxed mb-10 pb-10 border-b border-gray-100">
+        {post.summary}
+      </p>
+    )}
+
+    <!-- Content placeholder — wire up Markdoc renderer here -->
+    <div class="prose prose-lg prose-blue max-w-none text-gray-700">
+      <p class="text-gray-400 italic">Съдържанието ще се зареди след конфигуриране на Markdoc рендера.</p>
+    </div>
+  </article>
+</BlogLayout>

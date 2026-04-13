@@ -60,20 +60,16 @@ export default config({
       },
     }),
 
-    // ─── Gallery ──────────────────────────────────────────────────────────────
-    gallery: collection({
-      label: 'Галерия',
+    // ─── Patient Info Pages ───────────────────────────────────────────────────
+    patientInfo: collection({
+      label: 'За пациента – Страници',
       slugField: 'title',
-      path: 'content/gallery/*',
+      path: 'content/patient-info/*',
+      format: { contentField: 'content' },
       schema: {
-        title: fields.slug({ name: { label: 'Alt текст / Заглавие' } }),
-        image: fields.image({
-          label: 'Снимка',
-          directory: 'public/images/gallery',
-          publicPath: '/images/gallery',
-        }),
-        caption: fields.text({ label: 'Надпис под снимката (по желание)' }),
-        order: fields.integer({ label: 'Ред на показване' }),
+        title: fields.slug({ name: { label: 'Заглавие' } }),
+        order: fields.integer({ label: 'Ред в менюто', defaultValue: 1 }),
+        content: fields.markdoc({ label: 'Съдържание' }),
       },
     }),
   },
@@ -225,6 +221,28 @@ export default config({
         facebookUrl: fields.url({ label: 'Facebook URL' }),
         instagramUrl: fields.url({ label: 'Instagram URL' }),
         linkedinUrl: fields.url({ label: 'LinkedIn URL' }),
+      },
+    }),
+    // ─── Gallery ──────────────────────────────────────────────────────────────
+    gallery: singleton({
+      label: 'Галерия',
+      path: 'content/singletons/gallery',
+      schema: {
+        images: fields.array(
+          fields.object({
+            image: fields.image({
+              label: 'Снимка',
+              directory: 'public/images/gallery',
+              publicPath: '/images/gallery',
+            }),
+            alt: fields.text({ label: 'Alt текст' }),
+            caption: fields.text({ label: 'Надпис (по желание)' }),
+          }),
+          {
+            label: 'Снимки',
+            itemLabel: (props) => props.fields.alt.value || 'Снимка',
+          }
+        ),
       },
     }),
   },

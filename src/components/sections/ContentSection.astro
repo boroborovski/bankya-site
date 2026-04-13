@@ -1,0 +1,92 @@
+---
+interface Props {
+  heading: string
+  body: string
+  body2?: string
+  image?: string
+  imageAlt?: string
+  imagePosition?: 'left' | 'right'
+  ctaLabel?: string
+  ctaUrl?: string
+  bullets?: string[]
+  background?: 'white' | 'gray'
+}
+
+const {
+  heading,
+  body,
+  body2,
+  image,
+  imageAlt = '',
+  imagePosition = 'right',
+  ctaLabel,
+  ctaUrl,
+  bullets,
+  background = 'white',
+} = Astro.props
+
+const bg = background === 'gray' ? 'bg-gray-50' : 'bg-white'
+---
+
+<section class={`${bg} py-16 sm:py-20`}>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class={`flex flex-col gap-12 ${image ? 'lg:grid lg:grid-cols-2 lg:items-center' : ''}`}>
+
+      {/* Image – left */}
+      {image && imagePosition === 'left' && (
+        <div class="order-2 lg:order-1">
+          <img
+            src={image}
+            alt={imageAlt}
+            class="w-full rounded-2xl shadow-lg object-cover aspect-[4/3]"
+          />
+        </div>
+      )}
+
+      {/* Text */}
+      <div class={image && imagePosition === 'left' ? 'order-1 lg:order-2' : ''}>
+        <h2 class="mb-4 text-3xl sm:text-4xl tracking-tight font-extrabold text-gray-900">
+          {heading}
+        </h2>
+        <p class="text-gray-500 text-lg leading-relaxed mb-4">{body}</p>
+        {body2 && <p class="text-gray-500 leading-relaxed mb-4">{body2}</p>}
+
+        {bullets && bullets.length > 0 && (
+          <ul class="mt-4 space-y-3">
+            {bullets.map((item) => (
+              <li class="flex items-start gap-3">
+                <svg class="w-5 h-5 text-blue-700 mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                </svg>
+                <span class="text-gray-600">{item}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+
+        {ctaLabel && ctaUrl && (
+          <a
+            href={ctaUrl}
+            class="inline-flex items-center mt-8 font-semibold text-blue-700 hover:text-blue-900 transition-colors"
+          >
+            {ctaLabel}
+            <svg class="ml-2 w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+          </a>
+        )}
+      </div>
+
+      {/* Image – right */}
+      {image && imagePosition === 'right' && (
+        <div>
+          <img
+            src={image}
+            alt={imageAlt}
+            class="w-full rounded-2xl shadow-lg object-cover aspect-[4/3]"
+          />
+        </div>
+      )}
+    </div>
+  </div>
+</section>
