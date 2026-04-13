@@ -12,8 +12,8 @@ interface Props {
 const {
   headline,
   subheadline,
-  ctaLabel = 'Get started',
-  ctaUrl = '/contact',
+  ctaLabel,
+  ctaUrl,
   secondaryCtaLabel,
   secondaryCtaUrl,
   image,
@@ -33,22 +33,26 @@ const {
             {subheadline}
           </p>
         )}
-        <div class="mt-8 flex flex-wrap gap-4 {image ? '' : 'justify-center'}">
-          <a
-            href={ctaUrl}
-            class="inline-flex items-center px-6 py-3 text-base font-medium text-white bg-gray-900 rounded-lg hover:bg-gray-700 transition-colors"
-          >
-            {ctaLabel}
-          </a>
-          {secondaryCtaLabel && secondaryCtaUrl && (
-            <a
-              href={secondaryCtaUrl}
-              class="inline-flex items-center px-6 py-3 text-base font-medium text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-            >
-              {secondaryCtaLabel}
-            </a>
-          )}
-        </div>
+        {(ctaLabel || secondaryCtaLabel) && (
+          <div class="mt-8 flex flex-wrap gap-4 {image ? '' : 'justify-center'}">
+            {ctaLabel && ctaUrl && (
+              <a
+                href={ctaUrl}
+                class="inline-flex items-center px-6 py-3 text-base font-medium text-white bg-gray-900 rounded-lg hover:bg-gray-700 transition-colors"
+              >
+                {ctaLabel}
+              </a>
+            )}
+            {secondaryCtaLabel && secondaryCtaUrl && (
+              <a
+                href={secondaryCtaUrl}
+                class="inline-flex items-center px-6 py-3 text-base font-medium text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+              >
+                {secondaryCtaLabel}
+              </a>
+            )}
+          </div>
+        )}
       </div>
 
       <!-- Image -->
