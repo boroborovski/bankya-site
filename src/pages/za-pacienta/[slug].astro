@@ -4,6 +4,7 @@ import keystaticConfig from '../../../keystatic.config'
 import LandingLayout from '../../layouts/LandingLayout.astro'
 import CTASection from '../../components/sections/CTASection.astro'
 import Markdoc from '@markdoc/markdoc'
+import { markdocConfig } from '../../lib/markdoc-config'
 import fs from 'node:fs/promises'
 import path from 'node:path'
 
@@ -25,7 +26,7 @@ const raw = await fs.readFile(filePath, 'utf8')
 // Strip YAML frontmatter (everything between the first two --- markers)
 const withoutFrontmatter = raw.replace(/^---[\s\S]*?---\s*/, '')
 const ast = Markdoc.parse(withoutFrontmatter)
-const transformed = Markdoc.transform(ast)
+const transformed = Markdoc.transform(ast, markdocConfig)
 const html = Markdoc.renderers.html(transformed)
 
 const siblings = allEntries.sort((a, b) => (a.entry.order ?? 99) - (b.entry.order ?? 99))

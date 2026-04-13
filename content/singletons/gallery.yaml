@@ -1,1 +1,5 @@
-images: []
+images:
+  - image: /images/gallery/images/0/image.png
+    category: Сгради
+  - image: /images/gallery/images/1/image.png
+    category: Природа

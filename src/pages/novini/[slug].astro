@@ -2,21 +2,27 @@
 import BlogLayout from '../../layouts/BlogLayout.astro'
 import { createReader } from '@keystatic/core/reader'
 import keystaticConfig from '../../../keystatic.config'
+import Markdoc from '@markdoc/markdoc'
+import { markdocConfig } from '../../lib/markdoc-config'
+import fs from 'node:fs/promises'
+import path from 'node:path'
 
 const { slug } = Astro.params
-
 const reader = createReader(process.cwd(), keystaticConfig)
 const post = await reader.collections.posts.read(slug!)
 
-if (!post) {
-  return Astro.redirect('/novini')
-}
+if (!post) return Astro.redirect('/novini')
+
+const filePath = path.join(process.cwd(), 'content/posts', `${slug}.mdoc`)
+const raw = await fs.readFile(filePath, 'utf8')
+const withoutFrontmatter = raw.replace(/^---[\s\S]*?---\s*/, '')
+const ast = Markdoc.parse(withoutFrontmatter)
+const transformed = Markdoc.transform(ast, markdocConfig)
+const html = Markdoc.renderers.html(transformed)
 
 const dateFormatted = post.publishDate
   ? new Date(post.publishDate).toLocaleDateString('bg-BG', {
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric',
+      day: 'numeric', month: 'long', year: 'numeric',
     })
   : null
 ---
@@ -26,41 +32,32 @@ const dateFormatted = post.publishDate
   description={post.summary ?? undefined}
 >
   <article class="max-w-3xl mx-auto px-4 sm:px-6 py-16">
-    <!-- Back link -->
-    <a
-      href="/novini"
-      class="inline-flex items-center text-sm text-blue-700 hover:text-blue-900 font-medium mb-8 transition-colors"
-    >
+    <a href="/novini" class="inline-flex items-center text-sm text-blue-700 hover:text-blue-900 font-medium mb-8 transition-colors">
       <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
       </svg>
       Всички новини
     </a>
 
-    <!-- Meta -->
     <div class="mb-6 flex flex-wrap items-center gap-3 text-sm text-gray-400">
       {dateFormatted && <time>{dateFormatted}</time>}
-      {post.author && (
-        <>
-          <span>·</span>
-          <span>{post.author}</span>
-        </>
-      )}
+      {post.author && <><span>·</span><span>{post.author}</span></>}
     </div>
 
-    <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-900 leading-tight mb-6">
-      {post.title}
-    </h1>
+    <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-900 leading-tight mb-6">{post.title}</h1>
 
     {post.summary && (
-      <p class="text-xl text-gray-500 leading-relaxed mb-10 pb-10 border-b border-gray-100">
-        {post.summary}
-      </p>
+      <p class="text-xl text-gray-500 leading-relaxed mb-10 pb-10 border-b border-gray-100">{post.summary}</p>
     )}
 
-    <!-- Content placeholder — wire up Markdoc renderer here -->
-    <div class="prose prose-lg prose-blue max-w-none text-gray-700">
-      <p class="text-gray-400 italic">Съдържанието ще се зареди след конфигуриране на Markdoc рендера.</p>
+    <div class="prose prose-lg prose-blue max-w-none
+      prose-headings:font-bold prose-headings:tracking-tight
+      prose-a:text-blue-700 prose-a:no-underline hover:prose-a:underline
+      prose-table:w-full prose-table:text-sm prose-table:border-collapse
+      prose-th:bg-blue-50 prose-th:text-blue-900 prose-th:font-semibold prose-th:px-4 prose-th:py-2 prose-th:border prose-th:border-blue-200
+      prose-td:px-4 prose-td:py-2 prose-td:border prose-td:border-gray-200
+      prose-img:rounded-xl prose-img:shadow-md">
+      <Fragment set:html={html} />
     </div>
   </article>
 </BlogLayout>
