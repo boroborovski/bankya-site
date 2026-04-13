@@ -1,0 +1,8 @@
+heroSlides:
+  - headline: Тест
+    subheadline: Тест
+    ctaLabel: тест бутон
+    secondaryCtaLabel: Тест Бутон
+    image: /images/slides/heroSlides/0/image.png
+stats: []
+aboutBullets: []
