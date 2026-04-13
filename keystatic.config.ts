@@ -223,6 +223,44 @@ export default config({
         linkedinUrl: fields.url({ label: 'LinkedIn URL' }),
       },
     }),
+    // ─── Page Heroes ──────────────────────────────────────────────────────────
+    pageHeroes: singleton({
+      label: 'Заглавни банери (Hero)',
+      path: 'content/singletons/page-heroes',
+      schema: {
+        zaNas: fields.object({
+          headline: fields.text({ label: 'Заглавие' }),
+          subheadline: fields.text({ label: 'Подзаглавие', multiline: true }),
+          ctaLabel: fields.text({ label: 'Бутон 1 – текст' }),
+          ctaUrl: fields.text({ label: 'Бутон 1 – URL' }),
+          secondaryCtaLabel: fields.text({ label: 'Бутон 2 – текст (по желание)' }),
+          secondaryCtaUrl: fields.text({ label: 'Бутон 2 – URL (по желание)' }),
+        }, { label: 'За нас' }),
+        zaPatsienta: fields.object({
+          headline: fields.text({ label: 'Заглавие' }),
+          subheadline: fields.text({ label: 'Подзаглавие', multiline: true }),
+          ctaLabel: fields.text({ label: 'Бутон текст' }),
+          ctaUrl: fields.text({ label: 'Бутон URL' }),
+        }, { label: 'За пациента' }),
+        deynosti: fields.object({
+          headline: fields.text({ label: 'Заглавие' }),
+          subheadline: fields.text({ label: 'Подзаглавие', multiline: true }),
+        }, { label: 'Дейности' }),
+        galeriya: fields.object({
+          headline: fields.text({ label: 'Заглавие' }),
+          subheadline: fields.text({ label: 'Подзаглавие', multiline: true }),
+        }, { label: 'Галерия' }),
+        novini: fields.object({
+          headline: fields.text({ label: 'Заглавие' }),
+          subheadline: fields.text({ label: 'Подзаглавие', multiline: true }),
+        }, { label: 'Новини' }),
+        kontakti: fields.object({
+          headline: fields.text({ label: 'Заглавие' }),
+          subheadline: fields.text({ label: 'Подзаглавие', multiline: true }),
+        }, { label: 'Контакти' }),
+      },
+    }),
+
     // ─── Gallery ──────────────────────────────────────────────────────────────
     gallery: singleton({
       label: 'Галерия',
@@ -237,6 +275,7 @@ export default config({
             }),
             alt: fields.text({ label: 'Alt текст' }),
             caption: fields.text({ label: 'Надпис (по желание)' }),
+            category: fields.text({ label: 'Категория (напр. Сгради, Процедури, Природа)' }),
           }),
           {
             label: 'Снимки',

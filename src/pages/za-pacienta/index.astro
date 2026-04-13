@@ -6,8 +6,11 @@ import Hero from '../../components/sections/Hero.astro'
 import CTASection from '../../components/sections/CTASection.astro'
 
 const reader = createReader(process.cwd(), keystaticConfig)
-const sections = (await reader.collections.patientInfo.all())
-  .sort((a, b) => (a.entry.order ?? 99) - (b.entry.order ?? 99))
+const [sectionsRaw, pageHeroes] = await Promise.all([
+  reader.collections.patientInfo.all(),
+  reader.singletons.pageHeroes.read(),
+])
+const sections = sectionsRaw.sort((a, b) => (a.entry.order ?? 99) - (b.entry.order ?? 99))
 ---
 
 <LandingLayout
@@ -15,10 +18,10 @@ const sections = (await reader.collections.patientInfo.all())
   description="Информация за пациенти: прием по клинични пътеки, НЗОК, НОИ, платен прием и военен контингент в БПЛР–Банкя."
 >
   <Hero
-    headline="Информация за пациенти"
-    subheadline="Всичко, което трябва да знаете преди постъпване — начини на прием, необходими документи и условия на лечение."
-    ctaLabel="Запишете час"
-    ctaUrl="/kontakti"
+    headline={pageHeroes?.zaPatsienta?.headline || 'Информация за пациенти'}
+    subheadline={pageHeroes?.zaPatsienta?.subheadline || 'Всичко, което трябва да знаете преди постъпване.'}
+    ctaLabel={pageHeroes?.zaPatsienta?.ctaLabel || 'Запишете час'}
+    ctaUrl={pageHeroes?.zaPatsienta?.ctaUrl || '/kontakti'}
   />
 
   <section class="bg-white py-16 sm:py-20">

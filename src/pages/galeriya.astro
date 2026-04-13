@@ -6,13 +6,17 @@ import Hero from '../components/sections/Hero.astro'
 import Gallery from '../components/islands/Gallery.svelte'
 
 const reader = createReader(process.cwd(), keystaticConfig)
-const galleryData = await reader.singletons.gallery.read()
+const [galleryData, pageHeroes] = await Promise.all([
+  reader.singletons.gallery.read(),
+  reader.singletons.pageHeroes.read(),
+])
 
 const images = (galleryData?.images ?? [])
   .map((g) => ({
     src: g.image ?? '',
     alt: g.alt || '',
     caption: g.caption || undefined,
+    category: g.category || undefined,
   }))
   .filter((g) => g.src)
 ---
@@ -22,8 +26,8 @@ const images = (galleryData?.images ?? [])
   description="Снимки на болничната база, отделенията и прилежащата среда на БПЛР–Банкя."
 >
   <Hero
-    headline="Галерия"
-    subheadline="Разгледайте нашата болнична база, рехабилитационните зали, балнеологичните съоръжения и красивата природна среда на Банкя."
+    headline={pageHeroes?.galeriya?.headline || 'Галерия'}
+    subheadline={pageHeroes?.galeriya?.subheadline || 'Снимки на болничната база и природната среда на Банкя.'}
   />
 
   <section class="bg-white py-16 sm:py-20">

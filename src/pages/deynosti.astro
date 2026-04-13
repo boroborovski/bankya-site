@@ -8,7 +8,10 @@ import ContentSection from '../components/sections/ContentSection.astro'
 import CTASection from '../components/sections/CTASection.astro'
 
 const reader = createReader(process.cwd(), keystaticConfig)
-const servicesRaw = await reader.collections.services.all()
+const [servicesRaw, pageHeroes] = await Promise.all([
+  reader.collections.services.all(),
+  reader.singletons.pageHeroes.read(),
+])
 
 const services = servicesRaw.length
   ? servicesRaw
@@ -36,8 +39,8 @@ const services = servicesRaw.length
   description="Неврологична, ортопедична и кардиологична рехабилитация, балнеолечение, физиотерапия и кинезитерапия в БПЛР–Банкя."
 >
   <Hero
-    headline="Нашите дейности"
-    subheadline="Комплексна рехабилитация, обединяваща природните ресурси на Банкя с модерни медицински методи и висококвалифициран екип."
+    headline={pageHeroes?.deynosti?.headline || 'Нашите дейности'}
+    subheadline={pageHeroes?.deynosti?.subheadline || 'Комплексна рехабилитация в Банкя.'}
     ctaLabel="Запишете час"
     ctaUrl="/kontakti"
     secondaryCtaLabel="За пациента"

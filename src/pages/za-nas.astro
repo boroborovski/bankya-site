@@ -11,9 +11,10 @@ import CTASection from '../components/sections/CTASection.astro'
 
 const reader = createReader(process.cwd(), keystaticConfig)
 
-const [aboutPage, teamRaw] = await Promise.all([
+const [aboutPage, teamRaw, pageHeroes] = await Promise.all([
   reader.singletons.aboutPage.read(),
   reader.collections.team.all(),
+  reader.singletons.pageHeroes.read(),
 ])
 
 // Mission section
@@ -86,12 +87,12 @@ const members = teamRaw.length
   description="История, мисия и екип на Болница за продължително лечение и рехабилитация Банкя."
 >
   <Hero
-    headline="За БПЛР–Банкя"
-    subheadline="Над 50 години грижа за здравето на пациентите, съчетавайки природните богатства на Банкя с модерна медицина."
-    ctaLabel="Запишете час"
-    ctaUrl="/kontakti"
-    secondaryCtaLabel="Нашите дейности"
-    secondaryCtaUrl="/deynosti"
+    headline={pageHeroes?.zaNas?.headline || 'За БПЛР–Банкя'}
+    subheadline={pageHeroes?.zaNas?.subheadline || 'Над 50 години грижа за здравето на пациентите.'}
+    ctaLabel={pageHeroes?.zaNas?.ctaLabel || 'Запишете час'}
+    ctaUrl={pageHeroes?.zaNas?.ctaUrl || '/kontakti'}
+    secondaryCtaLabel={pageHeroes?.zaNas?.secondaryCtaLabel || undefined}
+    secondaryCtaUrl={pageHeroes?.zaNas?.secondaryCtaUrl || undefined}
   />
 
   <ContentSection
