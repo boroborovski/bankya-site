@@ -4,8 +4,22 @@ import keystaticConfig from '../../keystatic.config'
 import LandingLayout from '../layouts/LandingLayout.astro'
 import Hero from '../components/sections/Hero.astro'
 import ContactForm from '../components/islands/ContactForm.svelte'
+
 const reader = createReader(process.cwd(), keystaticConfig)
-const pageHeroes = await reader.singletons.pageHeroes.read()
+const [pageHeroes, settings] = await Promise.all([
+  reader.singletons.pageHeroes.read(),
+  reader.singletons.settings.read(),
+])
+
+const phone   = settings?.phone   || '02 997 7194'
+const email   = settings?.email   || 'bbbankya@abv.bg'
+const address = settings?.address || 'гр. Банкя, ул. „Цар Симеон" № 2, 1320'
+const hours   = settings?.hours   || 'Понеделник – Петък: 08:00 – 18:00'
+const mapsEmbedUrl = settings?.mapsEmbedUrl || 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2935.123!2d23.2695!3d42.7285!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40aa5c0b9e4c0001%3A0x0!2z0JHQsNC90LrRjywg0KHQvtGC0LjRjw!5e0!3m2!1sbg!2sbg!4v1'
+const mapsLinkUrl  = settings?.mapsLinkUrl  || 'https://maps.google.com/?q=Bankya+Sofia'
+
+const phoneHref = `tel:${phone.replace(/\s/g, '')}`
+const [hoursLabel, hoursValue] = hours.includes(':') ? [hours.split(':')[0].trim(), hours.split(/:(.*)/s)[1].trim()] : [hours, '']
 ---
 
 <LandingLayout
@@ -32,8 +46,8 @@ const pageHeroes = await reader.singletons.pageHeroes.read()
         <div class="space-y-6">
           <h2 class="text-2xl font-extrabold text-gray-900">Информация</h2>
 
-          <!-- Contact cards -->
           <div class="space-y-4">
+            <!-- Address -->
             <div class="flex items-start gap-4 p-5 bg-gray-50 rounded-2xl">
               <div class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center shrink-0">
                 <svg class="w-5 h-5 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -43,11 +57,11 @@ const pageHeroes = await reader.singletons.pageHeroes.read()
               </div>
               <div>
                 <h3 class="font-semibold text-gray-900 mb-0.5">Адрес</h3>
-                <p class="text-gray-600 text-sm">гр. Банкя, ул. „Цар Симеон" № 2</p>
-                <p class="text-gray-500 text-sm">п.к. 1320, София</p>
+                <p class="text-gray-600 text-sm">{address}</p>
               </div>
             </div>
 
+            <!-- Phone -->
             <div class="flex items-start gap-4 p-5 bg-gray-50 rounded-2xl">
               <div class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center shrink-0">
                 <svg class="w-5 h-5 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -56,13 +70,13 @@ const pageHeroes = await reader.singletons.pageHeroes.read()
               </div>
               <div>
                 <h3 class="font-semibold text-gray-900 mb-0.5">Телефон</h3>
-                <a href="tel:029977194" class="text-blue-700 font-medium hover:text-blue-900 transition-colors">
-                  02 997 7194
+                <a href={phoneHref} class="text-blue-700 font-medium hover:text-blue-900 transition-colors">
+                  {phone}
                 </a>
-                <p class="text-gray-500 text-sm mt-0.5">Понеделник – Петък: 08:00 – 18:00</p>
               </div>
             </div>
 
+            <!-- Email -->
             <div class="flex items-start gap-4 p-5 bg-gray-50 rounded-2xl">
               <div class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center shrink-0">
                 <svg class="w-5 h-5 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -71,13 +85,13 @@ const pageHeroes = await reader.singletons.pageHeroes.read()
               </div>
               <div>
                 <h3 class="font-semibold text-gray-900 mb-0.5">Имейл</h3>
-                <a href="mailto:bbbankya@abv.bg" class="text-blue-700 font-medium hover:text-blue-900 transition-colors">
-                  bbbankya@abv.bg
+                <a href={`mailto:${email}`} class="text-blue-700 font-medium hover:text-blue-900 transition-colors">
+                  {email}
                 </a>
-                <p class="text-gray-500 text-sm mt-0.5">Отговаряме в рамките на деня</p>
               </div>
             </div>
 
+            <!-- Hours -->
             <div class="flex items-start gap-4 p-5 bg-gray-50 rounded-2xl">
               <div class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center shrink-0">
                 <svg class="w-5 h-5 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -86,8 +100,10 @@ const pageHeroes = await reader.singletons.pageHeroes.read()
               </div>
               <div>
                 <h3 class="font-semibold text-gray-900 mb-0.5">Работно време</h3>
-                <p class="text-gray-600 text-sm">Понеделник – Петък</p>
-                <p class="text-blue-700 font-semibold text-sm">08:00 – 18:00</p>
+                {hoursValue
+                  ? <><p class="text-gray-600 text-sm">{hoursLabel}</p><p class="text-blue-700 font-semibold text-sm">{hoursValue}</p></>
+                  : <p class="text-gray-600 text-sm">{hours}</p>
+                }
               </div>
             </div>
           </div>
@@ -101,7 +117,7 @@ const pageHeroes = await reader.singletons.pageHeroes.read()
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
       <div class="rounded-2xl overflow-hidden shadow-md border border-gray-100 h-80 sm:h-96">
         <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2935.123!2d23.2695!3d42.7285!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40aa5c0b9e4c0001%3A0x0!2z0JHQsNC90LrRjywg0KHQvtGE0LjRjw!5e0!3m2!1sbg!2sbg!4v1"
+          src={mapsEmbedUrl}
           width="100%"
           height="100%"
           style="border:0;"
@@ -112,7 +128,7 @@ const pageHeroes = await reader.singletons.pageHeroes.read()
         ></iframe>
       </div>
       <p class="text-center text-sm text-gray-400 mt-3">
-        гр. Банкя, ул. „Цар Симеон" № 2 — <a href="https://maps.google.com/?q=Bankya+Sofia" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">Отвори в Google Maps</a>
+        {address} — <a href={mapsLinkUrl} target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">Отвори в Google Maps</a>
       </p>
     </div>
   </section>

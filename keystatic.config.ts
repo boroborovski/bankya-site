@@ -222,6 +222,10 @@ export default config({
         address: fields.text({ label: 'Адрес' }),
         hours: fields.text({ label: 'Работно време' }),
 
+        // Map
+        mapsEmbedUrl: fields.url({ label: 'Google Maps – Embed URL (iframe src)' }),
+        mapsLinkUrl: fields.url({ label: 'Google Maps – Link URL (Отвори в Google Maps)' }),
+
         // Social
         facebookUrl: fields.url({ label: 'Facebook URL' }),
         instagramUrl: fields.url({ label: 'Instagram URL' }),
