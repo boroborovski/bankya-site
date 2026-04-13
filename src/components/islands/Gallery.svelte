@@ -74,26 +74,24 @@
     </div>
   {/if}
 
-  <!-- Grid -->
-  <div class="columns-1 sm:columns-2 lg:columns-3 gap-4 [column-gap:1rem]">
+  <!-- Uniform grid -->
+  <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
     {#each visible as img, i}
       <button
         onclick={() => openLightbox(i)}
-        class="w-full mb-4 break-inside-avoid rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 cursor-zoom-in block focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 group"
+        class="group relative aspect-square rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
       >
-        <div class="relative">
-          <img
-            src={img.src}
-            alt={img.alt}
-            class="w-full object-cover group-hover:scale-[1.03] transition-transform duration-500"
-            loading="lazy"
-          />
-          {#if img.caption}
-            <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/60 to-transparent px-4 py-3 opacity-0 group-hover:opacity-100 transition-opacity">
-              <p class="text-white text-sm">{img.caption}</p>
-            </div>
-          {/if}
-        </div>
+        <img
+          src={img.src}
+          alt={img.alt}
+          class="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.05] transition-transform duration-500"
+          loading="lazy"
+        />
+        {#if img.caption}
+          <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/70 to-transparent px-3 py-2.5 opacity-0 group-hover:opacity-100 transition-opacity">
+            <p class="text-white text-xs leading-tight">{img.caption}</p>
+          </div>
+        {/if}
       </button>
     {/each}
   </div>
