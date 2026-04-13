@@ -5,6 +5,19 @@ import svelte from '@astrojs/svelte';
 import react from '@astrojs/react';
 import keystatic from '@keystatic/astro';
 import vercel from '@astrojs/vercel';
+import { readdirSync, statSync } from 'node:fs';
+import { join } from 'node:path';
+
+function walkDir(dir) {
+  let files = [];
+  for (const entry of readdirSync(dir)) {
+    const full = join(dir, entry);
+    statSync(full).isDirectory() ? files.push(...walkDir(full)) : files.push(full);
+  }
+  return files;
+}
+
+const contentFiles = walkDir('./content');
 
 // https://astro.build/config
 export default defineConfig({
@@ -13,7 +26,9 @@ export default defineConfig({
   security: {
     checkOrigin: false,
   },
-  adapter: vercel(),
+  adapter: vercel({
+    includeFiles: contentFiles,
+  }),
   vite: {
     plugins: [tailwindcss()],
     resolve: {
