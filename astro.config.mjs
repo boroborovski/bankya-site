@@ -4,14 +4,13 @@ import tailwindcss from '@tailwindcss/vite';
 import svelte from '@astrojs/svelte';
 import react from '@astrojs/react';
 import keystatic from '@keystatic/astro';
-import node from '@astrojs/node';
+import vercel from '@astrojs/vercel';
 
 // https://astro.build/config
-// Phase 2: swap `node` adapter for `@astrojs/vercel` and remove the mode option
 export default defineConfig({
-  site: 'https://bplrbankya.com', // update per-site
+  site: 'https://bplrbankya.com',
   output: 'server',
-  adapter: node({ mode: 'standalone' }),
+  adapter: vercel(),
   vite: {
     plugins: [tailwindcss()],
     resolve: {
