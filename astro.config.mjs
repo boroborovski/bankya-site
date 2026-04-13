@@ -10,6 +10,9 @@ import vercel from '@astrojs/vercel';
 export default defineConfig({
   site: 'https://bplrbankya.com',
   output: 'server',
+  security: {
+    checkOrigin: false,
+  },
   adapter: vercel(),
   vite: {
     plugins: [tailwindcss()],
