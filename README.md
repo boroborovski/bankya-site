@@ -4,7 +4,7 @@ Website for **Болница за продължително лечение и �
 
 Built on top of the Astro CMS boilerplate using Astro 5, Keystatic CMS, Tailwind CSS v4, and Svelte.
 
----
+----
 
 ## Stack
 
