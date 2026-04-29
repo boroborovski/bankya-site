@@ -282,13 +282,14 @@ export default config({
               directory: 'public/images/gallery',
               publicPath: '/images/gallery',
             }),
-            alt: fields.text({ label: 'Alt текст' }),
+            youtubeUrl: fields.text({ label: 'YouTube URL (вместо снимка — напр. https://youtu.be/xyz)' }),
+            alt: fields.text({ label: 'Alt текст / заглавие' }),
             caption: fields.text({ label: 'Надпис (по желание)' }),
-            category: fields.text({ label: 'Категория (напр. Сгради, Процедури, Природа)' }),
+            category: fields.text({ label: 'Категория (напр. Сгради, Процедури, Природа, Видеа)' }),
           }),
           {
-            label: 'Снимки',
-            itemLabel: (props) => props.fields.alt.value || 'Снимка',
+            label: 'Снимки и видеа',
+            itemLabel: (props) => props.fields.alt.value || props.fields.youtubeUrl.value || 'Елемент',
           }
         ),
       },

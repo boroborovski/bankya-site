@@ -17,8 +17,9 @@ const images = (galleryData?.images ?? [])
     alt: g.alt || '',
     caption: g.caption || undefined,
     category: g.category || undefined,
+    youtubeUrl: g.youtubeUrl || undefined,
   }))
-  .filter((g) => g.src)
+  .filter((g) => g.src || g.youtubeUrl)
 ---
 
 <LandingLayout

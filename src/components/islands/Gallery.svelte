@@ -1,7 +1,6 @@
 <script>
   let { images = [], pageSize = 12 } = $props()
 
-  // Categories
   const allCategories = [...new Set(images.map((img) => img.category).filter(Boolean))]
   const hasCategories = allCategories.length > 0
 
@@ -12,7 +11,6 @@
   const filtered = $derived(
     activeCategory === 'all' ? images : images.filter((img) => img.category === activeCategory)
   )
-  const totalPages = $derived(Math.ceil(filtered.length / pageSize))
   const visible = $derived(filtered.slice(0, page * pageSize))
   const hasMore = $derived(page * pageSize < filtered.length)
 
@@ -21,11 +19,7 @@
     page = 1
   }
 
-  function loadMore() {
-    page += 1
-  }
-
-  // Lightbox index is relative to `filtered`, not `images`
+  function loadMore() { page += 1 }
   function openLightbox(i) { lightboxIndex = i }
   function closeLightbox() { lightboxIndex = null }
   function nextImage(e) {
@@ -41,6 +35,12 @@
     if (e.key === 'Escape') closeLightbox()
     if (e.key === 'ArrowRight') lightboxIndex = (lightboxIndex + 1) % filtered.length
     if (e.key === 'ArrowLeft') lightboxIndex = (lightboxIndex - 1 + filtered.length) % filtered.length
+  }
+
+  function getYouTubeId(url) {
+    if (!url) return null
+    const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([\w-]+)/)
+    return m ? m[1] : null
   }
 </script>
 
@@ -74,20 +74,30 @@
     </div>
   {/if}
 
-  <!-- Uniform grid -->
+  <!-- Grid -->
   <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
     {#each visible as img, i}
+      {@const ytId = getYouTubeId(img.youtubeUrl)}
+      {@const thumbSrc = ytId ? `https://img.youtube.com/vi/${ytId}/hqdefault.jpg` : img.src}
       <button
         onclick={() => openLightbox(i)}
-        class="group relative aspect-square rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+        class="group relative aspect-square rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 {ytId ? 'cursor-pointer' : 'cursor-zoom-in'}"
       >
         <img
-          src={img.src}
+          src={thumbSrc}
           alt={img.alt}
           class="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.05] transition-transform duration-500"
           loading="lazy"
         />
-        {#if img.caption}
+        {#if ytId}
+          <div class="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/35 transition-colors">
+            <div class="w-14 h-14 rounded-full bg-red-600/90 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-200">
+              <svg class="w-6 h-6 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z" />
+              </svg>
+            </div>
+          </div>
+        {:else if img.caption}
           <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/70 to-transparent px-3 py-2.5 opacity-0 group-hover:opacity-100 transition-opacity">
             <p class="text-white text-xs leading-tight">{img.caption}</p>
           </div>
@@ -111,24 +121,38 @@
 
 <!-- Lightbox -->
 {#if lightboxIndex !== null}
+  {@const item = filtered[lightboxIndex]}
+  {@const ytId = getYouTubeId(item.youtubeUrl)}
   <div
     class="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4"
     onclick={closeLightbox}
     role="dialog"
     aria-modal="true"
-    aria-label="Преглед на снимка"
+    aria-label="Преглед"
   >
     <div
       class="relative max-w-5xl w-full flex flex-col items-center"
       onclick={(e) => e.stopPropagation()}
     >
-      <img
-        src={filtered[lightboxIndex].src}
-        alt={filtered[lightboxIndex].alt}
-        class="max-h-[80vh] max-w-full object-contain rounded-lg shadow-2xl"
-      />
-      {#if filtered[lightboxIndex].caption}
-        <p class="mt-4 text-gray-300 text-sm text-center">{filtered[lightboxIndex].caption}</p>
+      {#if ytId}
+        <div class="w-full aspect-video rounded-lg overflow-hidden shadow-2xl">
+          <iframe
+            src="https://www.youtube.com/embed/{ytId}?autoplay=1"
+            title={item.alt || 'Видео'}
+            class="w-full h-full"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          ></iframe>
+        </div>
+      {:else}
+        <img
+          src={item.src}
+          alt={item.alt}
+          class="max-h-[80vh] max-w-full object-contain rounded-lg shadow-2xl"
+        />
+      {/if}
+      {#if item.caption}
+        <p class="mt-4 text-gray-300 text-sm text-center">{item.caption}</p>
       {/if}
       <p class="mt-2 text-gray-500 text-xs">{lightboxIndex + 1} / {filtered.length}</p>
     </div>
@@ -140,12 +164,12 @@
     </button>
 
     {#if filtered.length > 1}
-      <button onclick={prevImage} class="absolute left-4 top-1/2 -translate-y-1/2 z-10 p-2 text-white/70 hover:text-white transition-colors" aria-label="Предишна снимка">
+      <button onclick={prevImage} class="absolute left-4 top-1/2 -translate-y-1/2 z-10 p-2 text-white/70 hover:text-white transition-colors" aria-label="Предишна">
         <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
         </svg>
       </button>
-      <button onclick={nextImage} class="absolute right-4 top-1/2 -translate-y-1/2 z-10 p-2 text-white/70 hover:text-white transition-colors" aria-label="Следваща снимка">
+      <button onclick={nextImage} class="absolute right-4 top-1/2 -translate-y-1/2 z-10 p-2 text-white/70 hover:text-white transition-colors" aria-label="Следваща">
         <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
         </svg>

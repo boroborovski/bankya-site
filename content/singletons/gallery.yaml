@@ -1,5 +1,17 @@
 images:
   - image: /images/gallery/images/0/image.png
+    alt: ''
+    caption: ''
     category: Сгради
   - image: /images/gallery/images/1/image.png
+    alt: ''
+    caption: ''
     category: Природа
+  - youtubeUrl: https://youtu.be/Hl3pKWDnCzo
+    alt: 106 години БПЛР–Банкя — Юбилеен филм
+    caption: 106 години БПЛР–Банкя към Военномедицинска академия
+    category: Видеа
+  - youtubeUrl: https://youtu.be/DsrszRRAXcg
+    alt: БПЛР–Банкя — Видеопредставяне
+    caption: Болница за продължително лечение и рехабилитация – Банкя
+    category: Видеа
