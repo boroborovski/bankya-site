@@ -1,0 +1,30 @@
+name: Auto PR from content branch
+
+on:
+  push:
+    branches:
+      - content
+
+jobs:
+  create-pr:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create or update PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          EXISTING=$(gh pr list --head content --base main --json number --jq '.[0].number')
+          if [ -z "$EXISTING" ]; then
+            gh pr create \
+              --title "Съдържание от Sveltia CMS" \
+              --body "Автоматично генериран PR от Sveltia CMS. Прегледайте промените и одобрете." \
+              --head content \
+              --base main
+          else
+            echo "PR #$EXISTING вече съществува, няма нужда от нов."
+          fi
