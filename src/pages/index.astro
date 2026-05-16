@@ -1,6 +1,5 @@
 ---
-import { createReader } from '@keystatic/core/reader'
-import keystaticConfig from '../../keystatic.config'
+import { readSingleton, readCollection } from '../lib/content'
 import LandingLayout from '../layouts/LandingLayout.astro'
 import HeroSlider from '../components/islands/HeroSlider.svelte'
 import Stats from '../components/sections/Stats.astro'
@@ -9,12 +8,10 @@ import Features from '../components/sections/Features.astro'
 import CTASection from '../components/sections/CTASection.astro'
 import BlogGrid from '../components/sections/BlogGrid.astro'
 
-const reader = createReader(process.cwd(), keystaticConfig)
-
 const [homepage, servicesRaw, postsRaw] = await Promise.all([
-  reader.singletons.homepage.read(),
-  reader.collections.services.all(),
-  reader.collections.posts.all(),
+  readSingleton('homepage'),
+  readCollection('services'),
+  readCollection('posts'),
 ])
 
 // Hero slides — CMS or hardcoded fallback
@@ -32,7 +29,7 @@ const slides = homepage?.heroSlides?.length
       {
         headline: 'Рехабилитация с природна минерална вода',
         subheadline: 'Болница за продължително лечение в сърцето на Банкя — природа, грижа и съвременна медицина.',
-        ctaLabel: 'Запишете час',
+        ctaLabel: 'Свържете се с нас',
         ctaUrl: '/kontakti',
         secondaryCtaLabel: 'Научете повече',
         secondaryCtaUrl: '/za-nas',
@@ -144,7 +141,7 @@ const posts = postsRaw.map((p) => ({
     <CTASection
       heading={ctaHeading}
       body={ctaBody}
-      ctaLabel="Запишете час"
+      ctaLabel="Свържете се с нас"
       ctaUrl="/kontakti"
       secondaryCtaLabel="За пациента"
       secondaryCtaUrl="/za-pacienta"

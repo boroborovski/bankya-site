@@ -1,6 +1,5 @@
 ---
-import { createReader } from '@keystatic/core/reader'
-import keystaticConfig from '../../keystatic.config'
+import { readSingleton, readCollection } from '../lib/content'
 import LandingLayout from '../layouts/LandingLayout.astro'
 import Hero from '../components/sections/Hero.astro'
 import ContentSection from '../components/sections/ContentSection.astro'
@@ -9,12 +8,10 @@ import Timeline from '../components/sections/Timeline.astro'
 import Team from '../components/sections/Team.astro'
 import CTASection from '../components/sections/CTASection.astro'
 
-const reader = createReader(process.cwd(), keystaticConfig)
-
 const [aboutPage, teamRaw, pageHeroes] = await Promise.all([
-  reader.singletons.aboutPage.read(),
-  reader.collections.team.all(),
-  reader.singletons.pageHeroes.read(),
+  readSingleton('about-page'),
+  readCollection('team'),
+  readSingleton('page-heroes'),
 ])
 
 // Mission section

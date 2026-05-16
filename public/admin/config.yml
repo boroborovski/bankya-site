@@ -1,0 +1,247 @@
+backend:
+  name: github
+  repo: boroborovski/bankya-site
+  branch: main
+
+media_folder: public/images
+public_folder: /images
+
+locale: bg
+
+collections:
+  # ─── Singletons ───────────────────────────────────────────────────────────────
+  - name: singletons
+    label: Настройки и страници
+    files:
+
+      - name: homepage
+        label: Начална страница
+        file: content/singletons/homepage.yaml
+        fields:
+          - label: Слайдове
+            name: heroSlides
+            widget: list
+            fields:
+              - {label: Заглавие, name: headline, widget: string}
+              - {label: Подзаглавие, name: subheadline, widget: text, required: false}
+              - {label: Бутон 1 – текст, name: ctaLabel, widget: string, required: false}
+              - {label: Бутон 1 – URL, name: ctaUrl, widget: string, required: false}
+              - {label: Бутон 2 – текст, name: secondaryCtaLabel, widget: string, required: false}
+              - {label: Бутон 2 – URL, name: secondaryCtaUrl, widget: string, required: false}
+              - label: Снимка
+                name: image
+                widget: image
+                required: false
+                media_folder: /public/images/slides/heroSlides
+                public_folder: /images/slides/heroSlides
+          - {label: Покажи статистики, name: showStats, widget: boolean, default: true}
+          - {label: Покажи секция За нас, name: showAbout, widget: boolean, default: true}
+          - {label: Покажи секция Дейности, name: showServices, widget: boolean, default: true}
+          - {label: Покажи CTA банер, name: showCta, widget: boolean, default: true}
+          - {label: Покажи последни новини, name: showBlog, widget: boolean, default: true}
+          - label: Статистики
+            name: stats
+            widget: list
+            fields:
+              - {label: Стойност, name: value, widget: string}
+              - {label: Описание, name: label, widget: string}
+          - {label: За нас – Заглавие, name: aboutHeading, widget: string, required: false}
+          - {label: За нас – Параграф 1, name: aboutBody, widget: text, required: false}
+          - {label: За нас – Параграф 2, name: aboutBody2, widget: text, required: false}
+          - label: Предимства
+            name: aboutBullets
+            widget: list
+            fields:
+              - {label: Точка, name: text, widget: string}
+          - {label: CTA – Заглавие, name: ctaHeading, widget: string, required: false}
+          - {label: CTA – Текст, name: ctaBody, widget: text, required: false}
+
+      - name: about-page
+        label: Страница За нас
+        file: content/singletons/about-page.yaml
+        fields:
+          - {label: Мисия – Заглавие, name: missionHeading, widget: string, required: false}
+          - {label: Мисия – Параграф 1, name: missionBody, widget: text, required: false}
+          - {label: Мисия – Параграф 2, name: missionBody2, widget: text, required: false}
+          - label: Предимства
+            name: missionBullets
+            widget: list
+            fields:
+              - {label: Точка, name: text, widget: string}
+          - label: Статистики
+            name: stats
+            widget: list
+            fields:
+              - {label: Стойност, name: value, widget: string}
+              - {label: Описание, name: label, widget: string}
+          - {label: Минерална вода – Заглавие, name: mineralHeading, widget: string, required: false}
+          - {label: Минерална вода – Параграф 1, name: mineralBody, widget: text, required: false}
+          - {label: Минерална вода – Параграф 2, name: mineralBody2, widget: text, required: false}
+          - label: Предимства (минерална вода)
+            name: mineralBullets
+            widget: list
+            fields:
+              - {label: Точка, name: text, widget: string}
+          - label: История (таймлайн)
+            name: timelineEvents
+            widget: list
+            fields:
+              - {label: Година, name: year, widget: string}
+              - {label: Заглавие, name: title, widget: string}
+              - {label: Описание, name: description, widget: text, required: false}
+
+      - name: settings
+        label: Настройки на сайта
+        file: content/singletons/settings.yaml
+        fields:
+          - {label: Име на сайта, name: siteName, widget: string}
+          - {label: Описание на сайта, name: siteDescription, widget: text, required: false}
+          - {label: Footer – Кратко описание, name: footerDescription, widget: text, required: false}
+          - label: Лого
+            name: logo
+            widget: image
+            required: false
+            media_folder: /public/images
+            public_folder: /images
+          - {label: Телефон, name: phone, widget: string, required: false}
+          - {label: Имейл, name: email, widget: string, required: false}
+          - {label: Адрес, name: address, widget: string, required: false}
+          - {label: Работно време, name: hours, widget: string, required: false}
+          - {label: Google Maps – Embed URL, name: mapsEmbedUrl, widget: string, required: false}
+          - {label: Google Maps – Link URL, name: mapsLinkUrl, widget: string, required: false}
+          - {label: Facebook URL, name: facebookUrl, widget: string, required: false}
+          - {label: Instagram URL, name: instagramUrl, widget: string, required: false}
+          - {label: LinkedIn URL, name: linkedinUrl, widget: string, required: false}
+
+      - name: page-heroes
+        label: Заглавни банери (Hero)
+        file: content/singletons/page-heroes.yaml
+        fields:
+          - label: За нас
+            name: zaNas
+            widget: object
+            fields:
+              - {label: Заглавие, name: headline, widget: string}
+              - {label: Подзаглавие, name: subheadline, widget: text, required: false}
+              - {label: Бутон 1 – текст, name: ctaLabel, widget: string, required: false}
+              - {label: Бутон 1 – URL, name: ctaUrl, widget: string, required: false}
+              - {label: Бутон 2 – текст, name: secondaryCtaLabel, widget: string, required: false}
+              - {label: Бутон 2 – URL, name: secondaryCtaUrl, widget: string, required: false}
+          - label: За пациента
+            name: zaPatsienta
+            widget: object
+            fields:
+              - {label: Заглавие, name: headline, widget: string}
+              - {label: Подзаглавие, name: subheadline, widget: text, required: false}
+              - {label: Бутон текст, name: ctaLabel, widget: string, required: false}
+              - {label: Бутон URL, name: ctaUrl, widget: string, required: false}
+          - label: Дейности
+            name: deynosti
+            widget: object
+            fields:
+              - {label: Заглавие, name: headline, widget: string}
+              - {label: Подзаглавие, name: subheadline, widget: text, required: false}
+          - label: Галерия
+            name: galeriya
+            widget: object
+            fields:
+              - {label: Заглавие, name: headline, widget: string}
+              - {label: Подзаглавие, name: subheadline, widget: text, required: false}
+          - label: Новини
+            name: novini
+            widget: object
+            fields:
+              - {label: Заглавие, name: headline, widget: string}
+              - {label: Подзаглавие, name: subheadline, widget: text, required: false}
+          - label: Контакти
+            name: kontakti
+            widget: object
+            fields:
+              - {label: Заглавие, name: headline, widget: string}
+              - {label: Подзаглавие, name: subheadline, widget: text, required: false}
+
+      - name: gallery
+        label: Галерия
+        file: content/singletons/gallery.yaml
+        fields:
+          - label: Снимки и видеа
+            name: images
+            widget: list
+            fields:
+              - label: Снимка
+                name: image
+                widget: image
+                required: false
+                media_folder: /public/images/gallery/images
+                public_folder: /images/gallery/images
+              - {label: YouTube URL, name: youtubeUrl, widget: string, required: false}
+              - {label: Alt текст / заглавие, name: alt, widget: string, required: false}
+              - {label: Надпис, name: caption, widget: string, required: false}
+              - {label: Категория, name: category, widget: string, required: false}
+
+  # ─── Collections ──────────────────────────────────────────────────────────────
+  - name: posts
+    label: Новини
+    folder: content/posts
+    extension: mdoc
+    format: frontmatter
+    create: true
+    slug: '{{slug}}'
+    fields:
+      - {label: Заглавие, name: title, widget: string}
+      - {label: Дата на публикуване, name: publishDate, widget: datetime, date_format: YYYY-MM-DD, time_format: false, required: false}
+      - {label: Автор, name: author, widget: string, required: false}
+      - {label: Резюме, name: summary, widget: text, required: false}
+      - label: Корица
+        name: coverImage
+        widget: image
+        required: false
+        media_folder: /public/images/posts
+        public_folder: /images/posts
+      - {label: Съдържание, name: body, widget: markdown}
+
+  - name: team
+    label: Екип
+    folder: content/team
+    extension: yaml
+    format: yaml
+    create: true
+    slug: '{{slug}}'
+    fields:
+      - {label: Имена, name: name, widget: string}
+      - {label: Длъжност / Специалност, name: role, widget: string, required: false}
+      - {label: Кратка биография, name: bio, widget: text, required: false}
+      - label: Снимка
+        name: photo
+        widget: image
+        required: false
+        media_folder: /public/images/team
+        public_folder: /images/team
+      - {label: LinkedIn URL, name: linkedin, widget: string, required: false}
+      - {label: Twitter / X URL, name: twitter, widget: string, required: false}
+
+  - name: services
+    label: Дейности
+    folder: content/services
+    extension: mdoc
+    format: frontmatter
+    create: true
+    slug: '{{slug}}'
+    fields:
+      - {label: Заглавие, name: title, widget: string}
+      - {label: Кратко описание, name: summary, widget: text, required: false}
+      - {label: Икона (heroicon name), name: icon, widget: string, required: false}
+      - {label: Ред на показване, name: order, widget: number, required: false}
+      - {label: Пълно съдържание, name: body, widget: markdown}
+
+  - name: patient-info
+    label: За пациента – Страници
+    folder: content/patient-info
+    extension: mdoc
+    format: frontmatter
+    create: true
+    slug: '{{slug}}'
+    fields:
+      - {label: Заглавие, name: title, widget: string}
+      - {label: Ред в менюто, name: order, widget: number, default: 1}
+      - {label: Съдържание, name: body, widget: markdown}

@@ -1,14 +1,12 @@
 ---
-import { createReader } from '@keystatic/core/reader'
-import keystaticConfig from '../../keystatic.config'
+import { readSingleton } from '../lib/content'
 import LandingLayout from '../layouts/LandingLayout.astro'
 import Hero from '../components/sections/Hero.astro'
 import ContactForm from '../components/islands/ContactForm.svelte'
 
-const reader = createReader(process.cwd(), keystaticConfig)
 const [pageHeroes, settings] = await Promise.all([
-  reader.singletons.pageHeroes.read(),
-  reader.singletons.settings.read(),
+  readSingleton('page-heroes'),
+  readSingleton('settings'),
 ])
 
 const phone   = settings?.phone   || '02 997 7194'

@@ -1,9 +1,7 @@
 ---
-import { createReader } from '@keystatic/core/reader'
-import keystaticConfig from '../../../keystatic.config'
+import { readSingleton } from '../../lib/content'
 
-const reader = createReader(process.cwd(), keystaticConfig)
-const settings = await reader.singletons.settings.read()
+const settings = await readSingleton('settings')
 
 const year = new Date().getFullYear()
 const siteName = settings?.siteName || 'БПЛР–БАНКЯ'
@@ -115,7 +113,7 @@ const facebookUrl = settings?.facebookUrl || null
     <div class="border-t border-gray-800 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm">
       <p>&copy; {year} {siteName}. Всички права запазени.</p>
       <a href="/kontakti" class="text-blue-400 hover:text-blue-300 transition-colors font-medium">
-        Запишете час →
+        Свържете се с нас →
       </a>
     </div>
   </div>

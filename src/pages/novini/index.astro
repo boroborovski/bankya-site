@@ -3,13 +3,10 @@ import LandingLayout from '../../layouts/LandingLayout.astro'
 import Hero from '../../components/sections/Hero.astro'
 import BlogGrid from '../../components/sections/BlogGrid.astro'
 
-// Read posts from Keystatic when content is available
-import { createReader } from '@keystatic/core/reader'
-import keystaticConfig from '../../../keystatic.config'
-const reader = createReader(process.cwd(), keystaticConfig)
+import { readCollection, readSingleton } from '../../lib/content'
 const [raw, pageHeroes] = await Promise.all([
-  reader.collections.posts.all(),
-  reader.singletons.pageHeroes.read(),
+  readCollection('posts'),
+  readSingleton('page-heroes'),
 ])
 const posts = raw.map((p) => ({
   title: p.entry.title,

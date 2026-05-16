@@ -1,17 +1,16 @@
 ---
 import BlogLayout from '../../layouts/BlogLayout.astro'
-import { createReader } from '@keystatic/core/reader'
-import keystaticConfig from '../../../keystatic.config'
+import { readCollectionEntry } from '../../lib/content'
 import Markdoc from '@markdoc/markdoc'
 import { markdocConfig } from '../../lib/markdoc-config'
 import fs from 'node:fs/promises'
 import path from 'node:path'
 
 const { slug } = Astro.params
-const reader = createReader(process.cwd(), keystaticConfig)
-const post = await reader.collections.posts.read(slug!)
+const postData = await readCollectionEntry('posts', slug!)
 
-if (!post) return Astro.redirect('/novini')
+if (!postData) return Astro.redirect('/novini')
+const post = postData.entry
 
 const filePath = path.join(process.cwd(), 'content/posts', `${slug}.mdoc`)
 const raw = await fs.readFile(filePath, 'utf8')

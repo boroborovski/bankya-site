@@ -1,6 +1,10 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
+@theme {
+  --font-sans: 'Comfortaa', cursive;
+}
+
 /* Responsive YouTube embeds */
 .youtube-embed {
   position: relative;

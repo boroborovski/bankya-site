@@ -1,16 +1,14 @@
 ---
-import { createReader } from '@keystatic/core/reader'
-import keystaticConfig from '../../keystatic.config'
+import { readSingleton, readCollection } from '../lib/content'
 import LandingLayout from '../layouts/LandingLayout.astro'
 import Hero from '../components/sections/Hero.astro'
 import Features from '../components/sections/Features.astro'
 import ContentSection from '../components/sections/ContentSection.astro'
 import CTASection from '../components/sections/CTASection.astro'
 
-const reader = createReader(process.cwd(), keystaticConfig)
 const [servicesRaw, pageHeroes] = await Promise.all([
-  reader.collections.services.all(),
-  reader.singletons.pageHeroes.read(),
+  readCollection('services'),
+  readSingleton('page-heroes'),
 ])
 
 const services = servicesRaw.length
@@ -41,7 +39,7 @@ const services = servicesRaw.length
   <Hero
     headline={pageHeroes?.deynosti?.headline || 'Нашите дейности'}
     subheadline={pageHeroes?.deynosti?.subheadline || 'Комплексна рехабилитация в Банкя.'}
-    ctaLabel="Запишете час"
+    ctaLabel="Свържете се с нас"
     ctaUrl="/kontakti"
     secondaryCtaLabel="За пациента"
     secondaryCtaUrl="/za-pacienta"
@@ -68,9 +66,9 @@ const services = servicesRaw.length
   />
 
   <CTASection
-    heading="Запишете се за консултация"
+    heading="Свържете се с нас"
     body="Свържете се с нас, за да разберете дали БПЛР–Банкя е подходящото място за вашата рехабилитация."
-    ctaLabel="Запишете час"
+    ctaLabel="Свържете се с нас"
     ctaUrl="/kontakti"
     secondaryCtaLabel="За пациента"
     secondaryCtaUrl="/za-pacienta"

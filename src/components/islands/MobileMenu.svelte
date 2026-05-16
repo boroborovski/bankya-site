@@ -109,7 +109,7 @@
           onclick={() => (open = false)}
           class="flex justify-center items-center px-4 py-3 text-sm font-semibold text-white bg-blue-700 rounded-xl hover:bg-blue-800 transition-colors"
         >
-          Запишете час
+          Свържете се с нас
         </a>
       </div>
     </nav>

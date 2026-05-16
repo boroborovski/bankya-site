@@ -1,11 +1,9 @@
 ---
-import { createReader } from '@keystatic/core/reader'
-import keystaticConfig from '../../../keystatic.config'
+import { readSingleton } from '../../lib/content'
 import TopBar from './TopBar.astro'
 import MobileMenu from '../islands/MobileMenu.svelte'
 
-const reader = createReader(process.cwd(), keystaticConfig)
-const settings = await reader.singletons.settings.read()
+const settings = await readSingleton('settings')
 
 const phone = settings?.phone || '02 997 7194'
 const email = settings?.email || 'bbbankya@abv.bg'
@@ -105,7 +103,7 @@ const currentPath = Astro.url.pathname
           href="/kontakti"
           class="hidden lg:inline-flex items-center px-4 py-2 text-sm font-semibold text-white bg-blue-700 rounded-lg hover:bg-blue-800 transition-colors"
         >
-          Запишете час
+          Свържете се с нас
         </a>
         <MobileMenu navItems={navItems} client:load />
       </div>

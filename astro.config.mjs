@@ -2,8 +2,6 @@
 import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 import svelte from '@astrojs/svelte';
-import react from '@astrojs/react';
-import keystatic from '@keystatic/astro';
 import vercel from '@astrojs/vercel';
 import { readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
@@ -23,20 +21,11 @@ const contentFiles = walkDir('./content');
 export default defineConfig({
   site: 'https://bplrbankya.com',
   output: 'server',
-  security: {
-    checkOrigin: false,
-  },
   adapter: vercel({
     includeFiles: contentFiles,
   }),
   vite: {
     plugins: [tailwindcss()],
-    resolve: {
-      dedupe: ['yjs', 'react', 'react-dom'],
-    },
-    optimizeDeps: {
-      exclude: ['@keystatic/astro'],
-    },
     server: {
       watch: {
         // Required when project lives on a Windows drive mounted in WSL2 (/mnt/*)
@@ -45,5 +34,5 @@ export default defineConfig({
       },
     },
   },
-  integrations: [react(), svelte(), keystatic()]
+  integrations: [svelte()],
 });
