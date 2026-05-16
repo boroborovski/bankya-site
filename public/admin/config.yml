@@ -1,9 +1,7 @@
 backend:
   name: github
   repo: boroborovski/bankya-site
-  branch: content
-
-publish_mode: editorial_workflow
+  branch: main
 
 media_folder: public/images
 public_folder: /images
