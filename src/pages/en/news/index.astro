@@ -1,0 +1,31 @@
+---
+import LandingLayout from '../../../layouts/LandingLayout.astro'
+import Hero from '../../../components/sections/Hero.astro'
+import BlogGrid from '../../../components/sections/BlogGrid.astro'
+
+import { readCollection, readSingleton } from '../../../lib/content'
+const [raw, pageHeroes] = await Promise.all([
+  readCollection('posts'),
+  readSingleton('page-heroes', 'en'),
+])
+const posts = raw.map((p) => ({
+  title: p.entry.title,
+  slug: p.slug,
+  date: p.entry.publishDate ?? undefined,
+  summary: p.entry.summary ?? undefined,
+  author: p.entry.author ?? undefined,
+}))
+---
+
+<LandingLayout
+  title="News — BPLR–BANKYA"
+  description="Latest news and announcements from the Hospital for Long-term Treatment and Rehabilitation Bankya."
+  lang="en"
+>
+  <Hero
+    headline={pageHeroes?.novini?.headline || 'News'}
+    subheadline={pageHeroes?.novini?.subheadline || 'Latest news and current information from BPLR–Bankya.'}
+  />
+
+  <BlogGrid posts={posts} background="white" />
+</LandingLayout>

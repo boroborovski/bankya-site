@@ -1,0 +1,96 @@
+missionHeading: Our Mission
+missionBody: >-
+  BPLR–Bankya is a hospital for long-term treatment and rehabilitation under the
+  Military Medical Academy — a specialised medical facility with over 110 years
+  of history. Our mission is to deliver physical treatment, motor and
+  psychological rehabilitation, balneotherapy, terrain and climate therapy for
+  patients with chronic conditions, as well as early rehabilitation after acute
+  hospital treatment.
+missionBody2: >-
+  We work in three main areas: early rehabilitation immediately after acute
+  treatment; long-term treatment with subsequent rehabilitation; and primary and
+  secondary prevention. Our highly qualified staff use the therapeutic properties
+  of mineral water and the natural factors of Bankya, combined with
+  physiotherapy and pharmacological treatment.
+missionBullets:
+  - text: Founded on 12 July 1913 — Bulgaria's first military sanatorium
+  - text: 120 beds — 100 rehabilitation and 20 long-term treatment
+  - text: Contracts with NHIF (CP 262.1, 263.1, 264, 265.1) and NSI
+  - text: Natural mineral water at 36°C from our own borehole
+  - text: Access to VMA laboratories and clinics when needed
+stats:
+  - value: "1913"
+    label: Year Founded
+  - value: "120"
+    label: Beds
+  - value: "30+"
+    label: Medical Specialists
+  - value: "4"
+    label: NHIF Clinical Pathways
+mineralHeading: Bankya's Mineral Water
+mineralBody: >-
+  The hospital uses natural mineral water from Borehole No. 2хг, located
+  directly next to the building — with a depth of 364.12 m, flow rate of
+  0.38–5 l/s and temperature of 36°C. The water is alkaline (pH 7.3),
+  homathermal, lightly mineralised, hydrocarbon-sulphate-sodium-nitrogen.
+  Total ionic sum: 333.28 mg/l.
+mineralBody2: >-
+  Key components (mg/l): Fluoride 1.60 · Chloride 9.02 · Sulphate 65.43 ·
+  Bicarbonate 26.19 · Sodium 70.32 · Potassium 4.06 · Calcium 2.45 ·
+  Meta-silicic acid 52.65 · Meta-boric acid 4.47. Water treatment procedures
+  include mineral baths (standard, hydromassage, whirlpool), a mineral pool and
+  drinking therapy.
+mineralBullets:
+  - text: Alkaline water, pH 7.3 — lightly mineralised
+  - text: Temperature 36°C — homathermal (ideal for balneotherapy)
+  - text: Hydrocarbon-sulphate-sodium-nitrogen composition
+  - text: Standard baths, hydromassage baths and whirlpool baths
+  - text: Mineral pool and drinking therapy
+timelineEvents:
+  - year: "1913"
+    title: Foundation of the Soldiers' Sanatorium
+    description: >-
+      On 12 July 1913, the Soldiers' Sanatorium in Bankya was opened —
+      Bulgaria's first military sanatorium. Created to treat those wounded and
+      ill from the Balkan Wars, it provided food, accommodation, medical care
+      and mineral baths.
+  - year: "1915"
+    title: Officers' Ward with 25 Beds
+    description: >-
+      An officers' ward with 25 beds was established at the sanatorium by order
+      of the commander of the First Sofia Divisional Hospital.
+  - year: "1926"
+    title: Ivanov Family Donation
+    description: >-
+      Reserve Major Nikola K. Ivanov and his wife Elena donated 1 million leva
+      (later tripled) and 1,699 sq.m. of land for the construction of a
+      sanatorium for war invalids.
+  - year: "1928"
+    title: New Building Completed — Block B
+    description: >-
+      In May 1928, the sanatorium was completed and opened. The building was
+      constructed with a donation from the Domna and Mihail Tenevi family in
+      memory of their son Major Kosta Panitsa, who died in battle.
+  - year: "1955"
+    title: Military Sanatorium under the Medical Directorate
+    description: >-
+      Established as a military sanatorium with gradual specialisation in
+      treatment and recovery from cardiovascular, cerebrovascular and
+      neurological conditions.
+  - year: "1971"
+    title: New Eight-storey Building — Block A
+    description: >-
+      Completed and commissioned in April 1971. A hydrotherapy unit,
+      physiotherapy, two motor rehabilitation halls, functional diagnostics and
+      an intensive care unit were added.
+  - year: "1998"
+    title: Joined the Military Medical Academy
+    description: >-
+      The sanatorium was incorporated into the structure of the Military Medical
+      Academy.
+  - year: "2017"
+    title: BPLR–Bankya under VMA
+    description: >-
+      With amendments to the Healthcare Establishments Act, the hospital
+      received its current name. Restoration of the cinema hall was completed —
+      a unique conference and cultural-entertainment centre.

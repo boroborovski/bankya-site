@@ -1,0 +1,131 @@
+---
+import { readSingleton, readCollection } from '../../lib/content'
+import LandingLayout from '../../layouts/LandingLayout.astro'
+import Hero from '../../components/sections/Hero.astro'
+import ContentSection from '../../components/sections/ContentSection.astro'
+import Stats from '../../components/sections/Stats.astro'
+import Timeline from '../../components/sections/Timeline.astro'
+import Team from '../../components/sections/Team.astro'
+import CTASection from '../../components/sections/CTASection.astro'
+
+const [aboutPage, teamRaw, pageHeroes] = await Promise.all([
+  readSingleton('about-page', 'en'),
+  readCollection('team'),
+  readSingleton('page-heroes', 'en'),
+])
+
+const missionHeading = aboutPage?.missionHeading || 'Our Mission'
+const missionBody = aboutPage?.missionBody || 'BPLR–Bankya is a hospital for long-term treatment and rehabilitation under the Military Medical Academy — a specialised medical facility with over 110 years of history.'
+const missionBody2 = aboutPage?.missionBody2 || 'Our highly qualified staff use the therapeutic properties of mineral water and the natural factors of Bankya, combined with physiotherapy and pharmacological treatment.'
+const missionBullets = aboutPage?.missionBullets?.map((b) => b.text) ?? [
+  "Founded on 12 July 1913 — Bulgaria's first military sanatorium",
+  '120 beds — 100 rehabilitation and 20 long-term treatment',
+  'Contracts with NHIF (CP 262.1, 263.1, 264, 265.1) and NSI',
+  'Natural mineral water at 36°C from our own borehole',
+  'Access to VMA laboratories and clinics when needed',
+]
+
+const stats = aboutPage?.stats?.length
+  ? aboutPage.stats.map((s) => ({ value: s.value, label: s.label }))
+  : [
+      { value: '1913', label: 'Year Founded' },
+      { value: '120', label: 'Beds' },
+      { value: '30+', label: 'Medical Specialists' },
+      { value: '4', label: 'NHIF Clinical Pathways' },
+    ]
+
+const mineralHeading = aboutPage?.mineralHeading || "Bankya's Mineral Water"
+const mineralBody = aboutPage?.mineralBody || 'The hospital uses natural mineral water from Borehole No. 2хг, located directly next to the building — with a depth of 364.12 m, flow rate of 0.38–5 l/s and temperature of 36°C. The water is alkaline (pH 7.3), homathermal, lightly mineralised.'
+const mineralBody2 = aboutPage?.mineralBody2 || 'Water treatment procedures include mineral baths (standard, hydromassage, whirlpool), a mineral pool and drinking therapy.'
+const mineralBullets = aboutPage?.mineralBullets?.map((b) => b.text) ?? [
+  'Alkaline water, pH 7.3 — lightly mineralised',
+  'Temperature 36°C — homathermal (ideal for balneotherapy)',
+  'Hydrocarbon-sulphate-sodium-nitrogen composition',
+  'Standard baths, hydromassage baths and whirlpool baths',
+  'Mineral pool and drinking therapy',
+]
+
+const timelineEvents = aboutPage?.timelineEvents?.length
+  ? aboutPage.timelineEvents.map((e) => ({
+      year: e.year,
+      title: e.title,
+      description: e.description,
+    }))
+  : [
+      { year: '1913', title: "Foundation of the Soldiers' Sanatorium", description: "Bulgaria's first military sanatorium, opened in Bankya to treat those wounded and ill from the Balkan Wars." },
+      { year: '1955', title: 'Military Sanatorium under the Medical Directorate', description: 'Gradual specialisation in treatment and recovery from cardiovascular, cerebrovascular and neurological conditions.' },
+      { year: '1971', title: 'New Eight-storey Building — Block A', description: 'Commissioned in April 1971 with hydrotherapy, physiotherapy, rehabilitation halls and intensive care.' },
+      { year: '1998', title: 'Joined the Military Medical Academy', description: 'Incorporated into the structure of the Military Medical Academy.' },
+      { year: '2017', title: 'BPLR–Bankya under VMA', description: 'The hospital received its current name following amendments to the Healthcare Establishments Act.' },
+    ]
+
+const members = teamRaw.length
+  ? teamRaw.map((m) => ({
+      name: m.entry.name,
+      role: m.entry.role,
+      bio: m.entry.bio ?? undefined,
+      photo: m.entry.photo ?? undefined,
+      linkedin: m.entry.linkedin ?? undefined,
+      twitter: m.entry.twitter ?? undefined,
+    }))
+  : []
+---
+
+<LandingLayout
+  title="About Us — BPLR–BANKYA"
+  description="History, mission and team of the Hospital for Long-term Treatment and Rehabilitation Bankya."
+  lang="en"
+>
+  <Hero
+    headline={pageHeroes?.zaNas?.headline || 'About Us'}
+    subheadline={pageHeroes?.zaNas?.subheadline || 'Over 110 years of specialised rehabilitation in the unique natural surroundings of Bankya.'}
+    ctaLabel={pageHeroes?.zaNas?.ctaLabel || undefined}
+    ctaUrl={pageHeroes?.zaNas?.ctaUrl || undefined}
+    secondaryCtaLabel={pageHeroes?.zaNas?.secondaryCtaLabel || undefined}
+    secondaryCtaUrl={pageHeroes?.zaNas?.secondaryCtaUrl || undefined}
+  />
+
+  <ContentSection
+    heading={missionHeading}
+    body={missionBody}
+    body2={missionBody2}
+    bullets={missionBullets}
+    background="gray"
+  />
+
+  <Stats heading="BPLR–Bankya in Numbers" stats={stats} background="white" />
+
+  <ContentSection
+    heading={mineralHeading}
+    body={mineralBody}
+    body2={mineralBody2}
+    bullets={mineralBullets}
+    imagePosition="left"
+    background="gray"
+  />
+
+  <Timeline
+    heading="History"
+    subheading="More than a century dedicated to rehabilitation."
+    events={timelineEvents}
+    background="white"
+  />
+
+  {members.length > 0 && (
+    <Team
+      heading="Our Team"
+      subheading="Qualified specialists dedicated to your recovery."
+      members={members}
+    />
+  )}
+
+  <CTASection
+    heading="Get in Touch"
+    body="Have questions or want to arrange an admission? Our team is here to help."
+    ctaLabel="Contact Us"
+    ctaUrl="/en/contact"
+    secondaryCtaLabel="Patient Info"
+    secondaryCtaUrl="/en/patient-info"
+    variant="blue"
+  />
+</LandingLayout>

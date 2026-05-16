@@ -1,0 +1,54 @@
+heroSlides:
+  - headline: Rehabilitation with Natural Mineral Water
+    subheadline: >-
+      Hospital for Long-term Treatment in the heart of Bankya — nature, care and
+      modern medicine.
+    ctaLabel: Contact Us
+    ctaUrl: /en/contact
+    secondaryCtaLabel: Learn More
+    secondaryCtaUrl: /en/about
+  - headline: Comprehensive Rehabilitation after Stroke and Trauma
+    subheadline: >-
+      Individual recovery programmes designed by a specialised medical team.
+    ctaLabel: Our Services
+    ctaUrl: /en/activities
+  - headline: Admission via Clinical Pathways and NHIF
+    subheadline: >-
+      Treatment funded by the National Health Insurance Fund and the National
+      Social Security Institute.
+    ctaLabel: Patient Information
+    ctaUrl: /en/patient-info
+    image: /images/slides/heroSlides/2/image.jpg
+showStats: true
+showAbout: true
+showServices: true
+showCta: true
+showBlog: true
+stats:
+  - value: '1913'
+    label: Year Founded
+  - value: '120'
+    label: Beds
+  - value: 30+
+    label: Doctors & Specialists
+  - value: 5000+
+    label: Patients Annually
+aboutHeading: About BPLR–Bankya
+aboutBody: >-
+  The Hospital for Long-term Treatment and Rehabilitation – Bankya is a
+  specialised medical facility with over 110 years of history, part of the
+  Military Medical Academy, located in the scenic town of Bankya, renowned for
+  its unique mineral springs.
+aboutBody2: >-
+  We offer comprehensive rehabilitation for patients recovering from stroke,
+  trauma, cardiac and orthopaedic conditions, combining the natural resources of
+  the area with modern treatment methods and a highly qualified medical team.
+aboutBullets:
+  - text: Level II accredited medical facility
+  - text: NHIF contract for clinical pathway admissions
+  - text: Natural mineral water with proven therapeutic effect
+  - text: Individual rehabilitation plan for each patient
+ctaHeading: Ready to Begin?
+ctaBody: >-
+  Contact us for information about admission, clinical pathways and available
+  beds.

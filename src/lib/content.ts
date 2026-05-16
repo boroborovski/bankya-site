@@ -11,24 +11,47 @@ function parseFrontmatter(raw: string): Record<string, any> {
   return parse(match[1]) ?? {}
 }
 
-export async function readSingleton(name: string): Promise<Record<string, any> | null> {
-  try {
-    const raw = await fs.readFile(path.join(ROOT, 'content/singletons', `${name}.yaml`), 'utf8')
-    return parse(raw) ?? null
-  } catch {
-    return null
+export async function readSingleton(name: string, locale = 'bg'): Promise<Record<string, any> | null> {
+  const files = locale !== 'bg'
+    ? [`${name}.${locale}.yaml`, `${name}.yaml`]
+    : [`${name}.yaml`]
+  for (const file of files) {
+    try {
+      const raw = await fs.readFile(path.join(ROOT, 'content/singletons', file), 'utf8')
+      return parse(raw) ?? null
+    } catch {
+      continue
+    }
   }
+  return null
 }
 
-export async function readCollection(name: string): Promise<Array<{ slug: string; entry: Record<string, any> }>> {
+export async function readCollection(
+  name: string,
+  locale = 'bg'
+): Promise<Array<{ slug: string; entry: Record<string, any> }>> {
   try {
     const dir = path.join(ROOT, 'content', name)
-    const files = (await fs.readdir(dir)).filter(f => f.endsWith('.yaml') || f.endsWith('.md'))
+    const allFiles = await fs.readdir(dir)
+    // Base files only — exclude locale-specific variants (e.g. foo.en.yaml / foo.en.md)
+    const baseFiles = allFiles.filter(f => {
+      if (!f.endsWith('.yaml') && !f.endsWith('.md')) return false
+      return !/\.[a-z]{2}\.(yaml|md)$/.test(f)
+    })
+
     return Promise.all(
-      files.map(async (f) => {
-        const raw = await fs.readFile(path.join(dir, f), 'utf8')
-        const slug = f.replace(/\.(yaml|mdoc)$/, '')
-        const entry = f.endsWith('.md') ? parseFrontmatter(raw) : (parse(raw) ?? {})
+      baseFiles.map(async (f) => {
+        const ext = f.endsWith('.yaml') ? 'yaml' : 'md'
+        const slug = f.slice(0, -(ext.length + 1))
+
+        let fileToRead = f
+        if (locale !== 'bg') {
+          const localeFile = `${slug}.${locale}.${ext}`
+          if (allFiles.includes(localeFile)) fileToRead = localeFile
+        }
+
+        const raw = await fs.readFile(path.join(dir, fileToRead), 'utf8')
+        const entry = fileToRead.endsWith('.md') ? parseFrontmatter(raw) : (parse(raw) ?? {})
         return { slug, entry }
       })
     )
@@ -39,13 +62,22 @@ export async function readCollection(name: string): Promise<Array<{ slug: string
 
 export async function readCollectionEntry(
   name: string,
-  slug: string
-): Promise<{ slug: string; entry: Record<string, any> } | null> {
-  for (const ext of ['mdoc', 'yaml']) {
+  slug: string,
+  locale = 'bg'
+): Promise<{ slug: string; entry: Record<string, any>; filePath: string } | null> {
+  const dir = path.join(ROOT, 'content', name)
+  const candidates = locale !== 'bg'
+    ? [`${slug}.${locale}.md`, `${slug}.${locale}.yaml`, `${slug}.md`, `${slug}.yaml`]
+    : [`${slug}.md`, `${slug}.yaml`, `${slug}.mdoc`]
+
+  for (const file of candidates) {
     try {
-      const raw = await fs.readFile(path.join(ROOT, 'content', name, `${slug}.${ext}`), 'utf8')
-      const entry = ext === 'mdoc' ? parseFrontmatter(raw) : (parse(raw) ?? {})
-      return { slug, entry }
+      const filePath = path.join(dir, file)
+      const raw = await fs.readFile(filePath, 'utf8')
+      const entry = file.endsWith('.md') || file.endsWith('.mdoc')
+        ? parseFrontmatter(raw)
+        : (parse(raw) ?? {})
+      return { slug, entry, filePath }
     } catch {
       continue
     }

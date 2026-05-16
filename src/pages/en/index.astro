@@ -1,0 +1,155 @@
+---
+import { readSingleton, readCollection } from '../../lib/content'
+import LandingLayout from '../../layouts/LandingLayout.astro'
+import HeroSlider from '../../components/islands/HeroSlider.svelte'
+import Stats from '../../components/sections/Stats.astro'
+import ContentSection from '../../components/sections/ContentSection.astro'
+import Features from '../../components/sections/Features.astro'
+import CTASection from '../../components/sections/CTASection.astro'
+import BlogGrid from '../../components/sections/BlogGrid.astro'
+
+const [homepage, servicesRaw, postsRaw] = await Promise.all([
+  readSingleton('homepage', 'en'),
+  readCollection('services', 'en'),
+  readCollection('posts'),
+])
+
+const slides = homepage?.heroSlides?.length
+  ? homepage.heroSlides.map((s) => ({
+      headline: s.headline,
+      subheadline: s.subheadline || undefined,
+      ctaLabel: s.ctaLabel || undefined,
+      ctaUrl: s.ctaUrl || undefined,
+      secondaryCtaLabel: s.secondaryCtaLabel || undefined,
+      secondaryCtaUrl: s.secondaryCtaUrl || undefined,
+      image: s.image || undefined,
+    }))
+  : [
+      {
+        headline: 'Rehabilitation with Natural Mineral Water',
+        subheadline: 'Hospital for Long-term Treatment in the heart of Bankya — nature, care and modern medicine.',
+        ctaLabel: 'Contact Us',
+        ctaUrl: '/en/contact',
+        secondaryCtaLabel: 'Learn More',
+        secondaryCtaUrl: '/en/about',
+      },
+      {
+        headline: 'Comprehensive Rehabilitation after Stroke and Trauma',
+        subheadline: 'Individual recovery programmes designed by a specialised medical team.',
+        ctaLabel: 'Our Services',
+        ctaUrl: '/en/activities',
+      },
+      {
+        headline: 'Admission via Clinical Pathways and NHIF',
+        subheadline: 'Treatment funded by the National Health Insurance Fund and the National Social Security Institute.',
+        ctaLabel: 'Patient Information',
+        ctaUrl: '/en/patient-info',
+      },
+    ]
+
+const stats = homepage?.stats?.length
+  ? homepage.stats.map((s) => ({ value: s.value, label: s.label }))
+  : [
+      { value: '1913', label: 'Year Founded' },
+      { value: '120', label: 'Beds' },
+      { value: '30+', label: 'Doctors & Specialists' },
+      { value: '5000+', label: 'Patients Annually' },
+    ]
+
+const aboutHeading = homepage?.aboutHeading || 'About BPLR–Bankya'
+const aboutBody = homepage?.aboutBody || 'The Hospital for Long-term Treatment and Rehabilitation – Bankya is a specialised medical facility with over 110 years of history, part of the Military Medical Academy, located in the scenic town of Bankya, renowned for its unique mineral springs.'
+const aboutBody2 = homepage?.aboutBody2 || 'We offer comprehensive rehabilitation for patients recovering from stroke, trauma, cardiac and orthopaedic conditions, combining the natural resources of the area with modern treatment methods and a highly qualified medical team.'
+const aboutBullets = homepage?.aboutBullets?.map((b) => b.text) ?? [
+  'Level II accredited medical facility',
+  'NHIF contract for clinical pathway admissions',
+  'Natural mineral water with proven therapeutic effect',
+  'Individual rehabilitation plan for each patient',
+]
+
+const showStats    = homepage?.showStats    ?? true
+const showAbout    = homepage?.showAbout    ?? true
+const showServices = homepage?.showServices ?? true
+const showCta      = homepage?.showCta      ?? true
+const showBlog     = homepage?.showBlog     ?? true
+
+const ctaHeading = homepage?.ctaHeading || 'Ready to Begin?'
+const ctaBody = homepage?.ctaBody || 'Contact us for information about admission, clinical pathways and available beds.'
+
+const services = servicesRaw.length
+  ? servicesRaw
+      .sort((a, b) => (a.entry.order ?? 99) - (b.entry.order ?? 99))
+      .map((s) => ({
+        icon: s.entry.icon || '🏥',
+        title: s.entry.title,
+        description: s.entry.summary || '',
+      }))
+  : [
+      { icon: '🧠', title: 'Neurological Rehabilitation', description: 'Specialised recovery programmes for stroke, traumatic brain injury, Parkinson\'s disease and degenerative neurological conditions.' },
+      { icon: '🦴', title: 'Orthopaedic Rehabilitation', description: 'Rehabilitation after fractures, total joint replacement, joint and spinal injuries.' },
+      { icon: '❤️', title: 'Cardiac Rehabilitation', description: 'Programmes for patients after myocardial infarction, coronary artery bypass and heart failure.' },
+      { icon: '💧', title: 'Balneotherapy', description: 'Therapeutic procedures with Bankya\'s natural mineral water — baths, hydromassage, underwater gymnastics.' },
+      { icon: '🏃', title: 'Kinesiotherapy', description: 'Individual and group therapeutic exercises, manual therapy and mechanotherapy.' },
+      { icon: '🔬', title: 'Diagnostics', description: 'Functional diagnostics, ECG, echocardiography and laboratory tests with on-site consultations.' },
+    ]
+
+const posts = postsRaw.map((p) => ({
+  title: p.entry.title,
+  slug: p.slug,
+  date: p.entry.publishDate ?? undefined,
+  summary: p.entry.summary ?? undefined,
+  image: p.entry.coverImage ?? undefined,
+}))
+---
+
+<LandingLayout
+  title="BPLR–BANKYA — Hospital for Long-term Treatment and Rehabilitation"
+  description="Specialised rehabilitation hospital in Bankya. Treatment with mineral water, physiotherapy, neurological and orthopaedic rehabilitation."
+  lang="en"
+>
+  <HeroSlider slides={slides} client:load />
+
+  {showStats && <Stats stats={stats} background="white" />}
+
+  {showAbout && (
+    <ContentSection
+      heading={aboutHeading}
+      body={aboutBody}
+      body2={aboutBody2}
+      bullets={aboutBullets}
+      ctaLabel="Learn More About Us"
+      ctaUrl="/en/about"
+      background="gray"
+    />
+  )}
+
+  {showServices && (
+    <Features
+      heading="Our Services"
+      subheading="Comprehensive treatment and rehabilitation across six main areas."
+      features={services}
+      columns={3}
+    />
+  )}
+
+  {showCta && (
+    <CTASection
+      heading={ctaHeading}
+      body={ctaBody}
+      ctaLabel="Contact Us"
+      ctaUrl="/en/contact"
+      secondaryCtaLabel="Patient Info"
+      secondaryCtaUrl="/en/patient-info"
+      variant="blue"
+    />
+  )}
+
+  {showBlog && posts.length > 0 && (
+    <BlogGrid
+      heading="Latest News"
+      posts={posts.slice(0, 3)}
+      ctaLabel="All News"
+      ctaUrl="/en/news"
+      background="gray"
+    />
+  )}
+</LandingLayout>

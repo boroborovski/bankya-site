@@ -1,16 +1,52 @@
 ---
 import { readSingleton } from '../../lib/content'
+import { ui, getNavItems } from '../../lib/i18n'
+import type { Locale } from '../../lib/i18n'
+
+interface Props {
+  lang?: Locale
+}
+
+const { lang = 'bg' } = Astro.props
 
 const settings = await readSingleton('settings')
+const strings = ui[lang]
+const navItems = getNavItems(lang)
 
 const year = new Date().getFullYear()
 const siteName = settings?.siteName || 'БПЛР–БАНКЯ'
-const footerDesc = settings?.footerDescription || 'Специализирана болница за рехабилитация в Банкя, предлагаща комплексно лечение с природни минерални води и съвременни методи.'
+const footerDesc = lang === 'bg'
+  ? (settings?.footerDescription || strings.footerTagline)
+  : strings.footerTagline
 const phone = settings?.phone || '02 997 7194'
 const email = settings?.email || 'bbbankya@abv.bg'
-const address = settings?.address || 'гр. Банкя, ул. „Цар Симеон" № 2, 1320'
+const address = settings?.address || 'гр. Банкя, ул. Цар Симеон № 2, 1320'
 const hours = settings?.hours || 'Пон – Пет: 08:00 – 18:00'
 const facebookUrl = settings?.facebookUrl || null
+
+const homeUrl = lang === 'bg' ? '/' : '/en/'
+const contactUrl = lang === 'bg' ? '/kontakti' : '/en/contact'
+const patientUrl = lang === 'bg' ? '/za-pacienta' : '/en/patient-info'
+
+// For patient info sub-links in footer
+const patientSubLinks = lang === 'bg'
+  ? [
+      { label: 'Обща информация', url: '/za-pacienta/obshta-informatsiya' },
+      { label: 'Клинични пътеки', url: '/za-pacienta/klinichni-pateki' },
+      { label: 'НОИ', url: '/za-pacienta/noi' },
+      { label: 'Платен прием', url: '/za-pacienta/platen-priem' },
+      { label: 'Военен контингент', url: '/za-pacienta/voenen-kontingent' },
+    ]
+  : [
+      { label: 'General Information', url: '/en/patient-info/obshta-informatsiya' },
+      { label: 'Clinical Pathways', url: '/en/patient-info/klinichni-pateki' },
+      { label: 'Social Insurance (NOI)', url: '/en/patient-info/noi' },
+      { label: 'Private Admission', url: '/en/patient-info/platen-priem' },
+      { label: 'Military Personnel', url: '/en/patient-info/voenen-kontingent' },
+    ]
+
+// Top-level nav links for footer (exclude patient-info which has its own column)
+const mainNavLinks = navItems.filter(item => !item.subItems)
 ---
 
 <footer class="bg-gray-900 text-gray-400">
@@ -20,13 +56,13 @@ const facebookUrl = settings?.facebookUrl || null
 
       <!-- Brand -->
       <div class="sm:col-span-2 lg:col-span-1">
-        <a href="/" class="inline-flex flex-col mb-4">
+        <a href={homeUrl} class="inline-flex flex-col mb-4">
           {settings?.logo ? (
             <img src={settings.logo} alt={siteName} class="h-10 w-auto brightness-0 invert" />
           ) : (
             <>
               <span class="text-white font-extrabold text-xl tracking-tight">{siteName}</span>
-              <span class="text-blue-400 text-xs font-medium tracking-wide mt-0.5">Болница за продължително лечение и рехабилитация</span>
+              <span class="text-blue-400 text-xs font-medium tracking-wide mt-0.5">{strings.footerTagline}</span>
             </>
           )}
         </a>
@@ -50,32 +86,27 @@ const facebookUrl = settings?.facebookUrl || null
 
       <!-- Navigation -->
       <div>
-        <h3 class="text-white text-sm font-semibold mb-5 uppercase tracking-wider">Навигация</h3>
+        <h3 class="text-white text-sm font-semibold mb-5 uppercase tracking-wider">{strings.footerNav}</h3>
         <ul class="space-y-3 text-sm">
-          <li><a href="/" class="hover:text-white transition-colors">Начало</a></li>
-          <li><a href="/za-nas" class="hover:text-white transition-colors">За нас</a></li>
-          <li><a href="/deynosti" class="hover:text-white transition-colors">Дейности</a></li>
-          <li><a href="/za-pacienta" class="hover:text-white transition-colors">За пациента</a></li>
-          <li><a href="/galeriya" class="hover:text-white transition-colors">Галерия</a></li>
-          <li><a href="/novini" class="hover:text-white transition-colors">Новини</a></li>
+          {mainNavLinks.map(item => (
+            <li><a href={item.url} class="hover:text-white transition-colors">{item.label}</a></li>
+          ))}
         </ul>
       </div>
 
       <!-- For Patients -->
       <div>
-        <h3 class="text-white text-sm font-semibold mb-5 uppercase tracking-wider">За пациента</h3>
+        <h3 class="text-white text-sm font-semibold mb-5 uppercase tracking-wider">{strings.footerPatient}</h3>
         <ul class="space-y-3 text-sm">
-          <li><a href="/za-pacienta#obshta" class="hover:text-white transition-colors">Обща информация</a></li>
-          <li><a href="/za-pacienta#klinichni" class="hover:text-white transition-colors">Клинични пътеки</a></li>
-          <li><a href="/za-pacienta#noi" class="hover:text-white transition-colors">НОИ</a></li>
-          <li><a href="/za-pacienta#platen" class="hover:text-white transition-colors">Платен прием</a></li>
-          <li><a href="/za-pacienta#voenen" class="hover:text-white transition-colors">Военен контингент</a></li>
+          {patientSubLinks.map(item => (
+            <li><a href={item.url} class="hover:text-white transition-colors">{item.label}</a></li>
+          ))}
         </ul>
       </div>
 
       <!-- Contact -->
       <div>
-        <h3 class="text-white text-sm font-semibold mb-5 uppercase tracking-wider">Контакти</h3>
+        <h3 class="text-white text-sm font-semibold mb-5 uppercase tracking-wider">{strings.footerContact}</h3>
         <ul class="space-y-3 text-sm">
           <li class="flex items-start gap-2">
             <svg class="w-4 h-4 mt-0.5 shrink-0 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -111,9 +142,9 @@ const facebookUrl = settings?.facebookUrl || null
     </div>
 
     <div class="border-t border-gray-800 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm">
-      <p>&copy; {year} {siteName}. Всички права запазени.</p>
-      <a href="/kontakti" class="text-blue-400 hover:text-blue-300 transition-colors font-medium">
-        Свържете се с нас →
+      <p>&copy; {year} {siteName}. {strings.footerRights}</p>
+      <a href={contactUrl} class="text-blue-400 hover:text-blue-300 transition-colors font-medium">
+        {strings.footerContactUs}
       </a>
     </div>
   </div>

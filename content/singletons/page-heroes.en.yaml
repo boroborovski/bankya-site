@@ -1,0 +1,33 @@
+zaNas:
+  headline: About Us
+  subheadline: >-
+    Over 110 years of specialised rehabilitation in the unique natural
+    surroundings of Bankya.
+  ctaLabel: Our Team
+  ctaUrl: '#team'
+  secondaryCtaLabel: Our Services
+  secondaryCtaUrl: /en/activities
+zaPatsienta:
+  headline: Patient Information
+  subheadline: >-
+    Everything you need to know before admission — types of admission, required
+    documents and treatment conditions.
+  ctaLabel: Contact Us
+deynosti:
+  headline: Our Services
+  subheadline: >-
+    Comprehensive rehabilitation across six specialised areas, combining
+    Bankya's natural resources with modern medical methods.
+galeriya:
+  headline: Gallery
+  subheadline: >-
+    Browse our hospital facilities, rehabilitation halls, balneotherapy
+    equipment and the beautiful natural surroundings of Bankya.
+novini:
+  headline: News
+  subheadline: Latest news and current information from BPLR–Bankya.
+kontakti:
+  headline: Contact Us
+  subheadline: >-
+    We are happy to answer your questions and help you choose the right
+    rehabilitation programme.

@@ -2,7 +2,16 @@
   let open = $state(false)
   let expandedItem = $state(null)
 
-  let { navItems = [] } = $props()
+  let {
+    navItems = [],
+    ctaUrl = '/kontakti',
+    ctaLabel = 'Свържете се с нас',
+    alternatePath = '/',
+    alternateLangLabel = 'EN',
+    openMenuLabel = 'Отвори меню',
+    closeMenuLabel = 'Затвори меню',
+    closeLabel = 'Затвори',
+  } = $props()
 
   function toggleSubmenu(label) {
     expandedItem = expandedItem === label ? null : label
@@ -13,7 +22,7 @@
 <button
   onclick={() => (open = !open)}
   class="lg:hidden p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors"
-  aria-label="Отвори меню"
+  aria-label={openMenuLabel}
   aria-expanded={open}
 >
   {#if open}
@@ -34,7 +43,7 @@
     <button
       class="absolute inset-0 bg-black/40 cursor-default"
       onclick={() => (open = false)}
-      aria-label="Затвори меню"
+      aria-label={closeMenuLabel}
     ></button>
 
     <!-- Panel -->
@@ -44,15 +53,24 @@
         <span class="font-extrabold text-gray-900 tracking-tight">
           БПЛР<span class="text-blue-700">–БАНКЯ</span>
         </span>
-        <button
-          onclick={() => (open = false)}
-          class="p-1.5 text-gray-500 hover:text-gray-900 rounded-md hover:bg-gray-100 transition-colors"
-          aria-label="Затвори"
-        >
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
+        <div class="flex items-center gap-2">
+          <a
+            href={alternatePath}
+            onclick={() => (open = false)}
+            class="text-xs font-semibold px-2 py-1 rounded border border-gray-200 text-gray-600 hover:border-blue-300 hover:text-blue-700 transition-colors"
+          >
+            {alternateLangLabel}
+          </a>
+          <button
+            onclick={() => (open = false)}
+            class="p-1.5 text-gray-500 hover:text-gray-900 rounded-md hover:bg-gray-100 transition-colors"
+            aria-label={closeLabel}
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
       </div>
 
       <!-- Nav items -->
@@ -105,11 +123,11 @@
       <!-- CTA -->
       <div class="px-4 pb-6 pt-2 border-t border-gray-100">
         <a
-          href="/kontakti"
+          href={ctaUrl}
           onclick={() => (open = false)}
           class="flex justify-center items-center px-4 py-3 text-sm font-semibold text-white bg-blue-700 rounded-xl hover:bg-blue-800 transition-colors"
         >
-          Свържете се с нас
+          {ctaLabel}
         </a>
       </div>
     </nav>

@@ -1,0 +1,38 @@
+---
+import { readSingleton } from '../../lib/content'
+import LandingLayout from '../../layouts/LandingLayout.astro'
+import Hero from '../../components/sections/Hero.astro'
+import Gallery from '../../components/islands/Gallery.svelte'
+
+const [galleryData, pageHeroes] = await Promise.all([
+  readSingleton('gallery'),
+  readSingleton('page-heroes', 'en'),
+])
+
+const images = (galleryData?.images ?? [])
+  .map((g) => ({
+    src: g.image ?? '',
+    alt: g.alt || '',
+    caption: g.caption || undefined,
+    category: g.category || undefined,
+    youtubeUrl: g.youtubeUrl || undefined,
+  }))
+  .filter((g) => g.src || g.youtubeUrl)
+---
+
+<LandingLayout
+  title="Gallery — BPLR–BANKYA"
+  description="Photos of the hospital facilities, wards and surrounding natural environment of BPLR–Bankya."
+  lang="en"
+>
+  <Hero
+    headline={pageHeroes?.galeriya?.headline || 'Gallery'}
+    subheadline={pageHeroes?.galeriya?.subheadline || 'Photos of the hospital facilities and the natural surroundings of Bankya.'}
+  />
+
+  <section class="bg-white py-16 sm:py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <Gallery images={images} client:load />
+    </div>
+  </section>
+</LandingLayout>

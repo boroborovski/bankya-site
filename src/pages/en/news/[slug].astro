@@ -1,14 +1,14 @@
 ---
-import BlogLayout from '../../layouts/BlogLayout.astro'
-import { readCollectionEntry } from '../../lib/content'
+import BlogLayout from '../../../layouts/BlogLayout.astro'
+import { readCollectionEntry } from '../../../lib/content'
 import Markdoc from '@markdoc/markdoc'
-import { markdocConfig } from '../../lib/markdoc-config'
+import { markdocConfig } from '../../../lib/markdoc-config'
 import fs from 'node:fs/promises'
 
 const { slug } = Astro.params
-const postData = await readCollectionEntry('posts', slug!)
+const postData = await readCollectionEntry('posts', slug!, 'en')
 
-if (!postData) return Astro.redirect('/novini')
+if (!postData) return Astro.redirect('/en/news')
 const post = postData.entry
 
 const raw = await fs.readFile(postData.filePath, 'utf8')
@@ -18,22 +18,23 @@ const transformed = Markdoc.transform(ast, markdocConfig)
 const html = Markdoc.renderers.html(transformed)
 
 const dateFormatted = post.publishDate
-  ? new Date(post.publishDate).toLocaleDateString('bg-BG', {
+  ? new Date(post.publishDate).toLocaleDateString('en-GB', {
       day: 'numeric', month: 'long', year: 'numeric',
     })
   : null
 ---
 
 <BlogLayout
-  title={`${post.title} — БПЛР–БАНКЯ`}
+  title={`${post.title} — BPLR–BANKYA`}
   description={post.summary ?? undefined}
+  lang="en"
 >
   <article class="max-w-3xl mx-auto px-4 sm:px-6 py-16">
-    <a href="/novini" class="inline-flex items-center text-sm text-blue-700 hover:text-blue-900 font-medium mb-8 transition-colors">
+    <a href="/en/news" class="inline-flex items-center text-sm text-blue-700 hover:text-blue-900 font-medium mb-8 transition-colors">
       <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
       </svg>
-      Всички новини
+      All News
     </a>
 
     <div class="mb-6 flex flex-wrap items-center gap-3 text-sm text-gray-400">

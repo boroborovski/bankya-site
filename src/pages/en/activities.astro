@@ -1,0 +1,78 @@
+---
+import { readCollection, readSingleton } from '../../lib/content'
+import LandingLayout from '../../layouts/LandingLayout.astro'
+import Hero from '../../components/sections/Hero.astro'
+import Features from '../../components/sections/Features.astro'
+import ContentSection from '../../components/sections/ContentSection.astro'
+import CTASection from '../../components/sections/CTASection.astro'
+
+const [servicesRaw, pageHeroes] = await Promise.all([
+  readCollection('services', 'en'),
+  readSingleton('page-heroes', 'en'),
+])
+
+const services = servicesRaw.length
+  ? servicesRaw
+      .sort((a, b) => (a.entry.order ?? 99) - (b.entry.order ?? 99))
+      .map((s) => ({
+        icon: s.entry.icon || '🏥',
+        title: s.entry.title,
+        description: s.entry.summary || '',
+      }))
+  : [
+      { icon: '🧠', title: 'Neurological Rehabilitation', description: 'Specialised recovery programmes for stroke, traumatic brain injury, Parkinson\'s disease and degenerative neurological conditions.' },
+      { icon: '🦴', title: 'Orthopaedic Rehabilitation', description: 'Rehabilitation after fractures, total joint replacement, joint and spinal injuries.' },
+      { icon: '❤️', title: 'Cardiac Rehabilitation', description: 'Programmes for patients after myocardial infarction, coronary artery bypass and heart failure.' },
+      { icon: '💧', title: 'Balneotherapy', description: 'Therapeutic procedures with Bankya\'s natural mineral water — baths, hydromassage, underwater gymnastics.' },
+      { icon: '🏋️', title: 'Kinesiotherapy', description: 'Individual and group therapeutic exercises, manual therapy and mechanotherapy.' },
+      { icon: '⚡', title: 'Physical Therapy', description: 'Electrotherapy, magnetic therapy, ultrasound, laser therapy, paraffin therapy and cryotherapy.' },
+      { icon: '🤲', title: 'Massage & Manual Therapy', description: 'Classical therapeutic massage, reflexotherapy and post-isometric relaxation.' },
+      { icon: '🔬', title: 'Diagnostics', description: 'Functional diagnostics, ECG, echocardiography and laboratory tests with on-site consultations.' },
+      { icon: '🧘', title: 'Occupational Therapy', description: 'Functional rehabilitation to restore daily living skills after neurological events and trauma.' },
+    ]
+---
+
+<LandingLayout
+  title="Services — BPLR–BANKYA"
+  description="Neurological, orthopaedic and cardiac rehabilitation, balneotherapy, physiotherapy and kinesiotherapy at BPLR–Bankya."
+  lang="en"
+>
+  <Hero
+    headline={pageHeroes?.deynosti?.headline || 'Our Services'}
+    subheadline={pageHeroes?.deynosti?.subheadline || 'Comprehensive rehabilitation in Bankya.'}
+    ctaLabel="Contact Us"
+    ctaUrl="/en/contact"
+    secondaryCtaLabel="Patient Info"
+    secondaryCtaUrl="/en/patient-info"
+  />
+
+  <Features
+    heading="Specialties and Procedures"
+    subheading="A broad range of rehabilitation services covering the main needs of patients recovering from acute and chronic conditions."
+    features={services}
+    columns={3}
+  />
+
+  <ContentSection
+    heading="Treatment Methodology"
+    body="Each patient undergoes an initial assessment and functional evaluation by a specialist. An individual rehabilitation plan is then drawn up, tailored to the diagnosis, general health status and goals of the patient."
+    body2="Treatment is multidisciplinary — physicians, physiotherapists, kinesiotherapists and nurses work as a team. Progress is monitored regularly and the plan is updated as needed."
+    bullets={[
+      'Initial assessment and functional evaluation',
+      'Individual rehabilitation plan',
+      'Multidisciplinary team approach',
+      'Regular monitoring and therapy adjustment',
+    ]}
+    background="gray"
+  />
+
+  <CTASection
+    heading="Get in Touch"
+    body="Contact us to find out whether BPLR–Bankya is the right place for your rehabilitation."
+    ctaLabel="Contact Us"
+    ctaUrl="/en/contact"
+    secondaryCtaLabel="Patient Info"
+    secondaryCtaUrl="/en/patient-info"
+    variant="blue"
+  />
+</LandingLayout>

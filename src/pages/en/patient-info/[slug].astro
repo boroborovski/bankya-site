@@ -1,20 +1,20 @@
 ---
-import { readCollectionEntry, readCollection } from '../../lib/content'
-import LandingLayout from '../../layouts/LandingLayout.astro'
-import CTASection from '../../components/sections/CTASection.astro'
+import { readCollectionEntry, readCollection } from '../../../lib/content'
+import LandingLayout from '../../../layouts/LandingLayout.astro'
+import CTASection from '../../../components/sections/CTASection.astro'
 import Markdoc from '@markdoc/markdoc'
-import { markdocConfig } from '../../lib/markdoc-config'
+import { markdocConfig } from '../../../lib/markdoc-config'
 import fs from 'node:fs/promises'
 
 const { slug } = Astro.params
-if (!slug) return Astro.redirect('/za-pacienta')
+if (!slug) return Astro.redirect('/en/patient-info')
 
 const [entryData, allEntries] = await Promise.all([
-  readCollectionEntry('patient-info', slug),
-  readCollection('patient-info'),
+  readCollectionEntry('patient-info', slug, 'en'),
+  readCollection('patient-info', 'en'),
 ])
 
-if (!entryData) return Astro.redirect('/za-pacienta')
+if (!entryData) return Astro.redirect('/en/patient-info')
 const entry = entryData.entry
 
 const raw = await fs.readFile(entryData.filePath, 'utf8')
@@ -30,17 +30,18 @@ const next = siblings[currentIndex + 1] ?? null
 ---
 
 <LandingLayout
-  title={`${entry.title} — За пациента — БПЛР–БАНКЯ`}
-  description={`Информация за пациенти: ${entry.title}. БПЛР–Банкя.`}
+  title={`${entry.title} — Patient Info — BPLR–BANKYA`}
+  description={`Patient information: ${entry.title}. BPLR–Bankya.`}
+  lang="en"
 >
   <div class="bg-white py-12 sm:py-16">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
 
       <!-- Breadcrumb -->
       <nav class="flex items-center gap-2 text-sm text-gray-500 mb-8">
-        <a href="/" class="hover:text-blue-700 transition-colors">Начало</a>
+        <a href="/en/" class="hover:text-blue-700 transition-colors">Home</a>
         <span>/</span>
-        <a href="/za-pacienta" class="hover:text-blue-700 transition-colors">За пациента</a>
+        <a href="/en/patient-info" class="hover:text-blue-700 transition-colors">Patient Info</a>
         <span>/</span>
         <span class="text-gray-900 font-medium">{entry.title}</span>
       </nav>
@@ -50,12 +51,12 @@ const next = siblings[currentIndex + 1] ?? null
         <!-- Sidebar nav -->
         <aside class="hidden lg:block">
           <nav class="sticky top-24">
-            <p class="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-3">За пациента</p>
+            <p class="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-3">Patient Info</p>
             <ul class="space-y-1">
               {siblings.map((s) => (
                 <li>
                   <a
-                    href={`/za-pacienta/${s.slug}`}
+                    href={`/en/patient-info/${s.slug}`}
                     class={`block px-3 py-2 rounded-lg text-sm transition-colors ${
                       s.slug === slug
                         ? 'bg-blue-50 text-blue-700 font-semibold'
@@ -89,7 +90,7 @@ const next = siblings[currentIndex + 1] ?? null
           <!-- Prev / Next -->
           <div class="mt-12 pt-8 border-t border-gray-100 flex justify-between gap-4">
             {prev ? (
-              <a href={`/za-pacienta/${prev.slug}`} class="flex items-center gap-2 text-sm text-gray-500 hover:text-blue-700 transition-colors">
+              <a href={`/en/patient-info/${prev.slug}`} class="flex items-center gap-2 text-sm text-gray-500 hover:text-blue-700 transition-colors">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                 </svg>
@@ -97,7 +98,7 @@ const next = siblings[currentIndex + 1] ?? null
               </a>
             ) : <span />}
             {next ? (
-              <a href={`/za-pacienta/${next.slug}`} class="flex items-center gap-2 text-sm text-gray-500 hover:text-blue-700 transition-colors">
+              <a href={`/en/patient-info/${next.slug}`} class="flex items-center gap-2 text-sm text-gray-500 hover:text-blue-700 transition-colors">
                 {next.entry.title}
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
@@ -111,10 +112,10 @@ const next = siblings[currentIndex + 1] ?? null
   </div>
 
   <CTASection
-    heading="Имате въпроси?"
-    body="Свържете се с нас за информация за прием, клинични пътеки и свободни места."
-    ctaLabel="Свържете се с нас"
-    ctaUrl="/kontakti"
+    heading="Have questions?"
+    body="Contact us for information about admission, clinical pathways and available beds."
+    ctaLabel="Contact Us"
+    ctaUrl="/en/contact"
     variant="light"
   />
 </LandingLayout>

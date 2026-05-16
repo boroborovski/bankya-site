@@ -1,11 +1,13 @@
 ---
 import '../styles/global.css'
+import { getAlternateUrl, getCurrentLocale } from '../lib/i18n'
 
 interface Props {
   title: string
   description?: string
   image?: string
   canonicalUrl?: string
+  lang?: string
 }
 
 const {
@@ -13,13 +15,18 @@ const {
   description = 'A website built with Astro',
   image = '/images/og-default.jpg',
   canonicalUrl,
+  lang = 'bg',
 } = Astro.props
 
 const canonical = canonicalUrl || (Astro.site ? new URL(Astro.url.pathname, Astro.site).toString() : Astro.url.href)
+const currentLocale = getCurrentLocale(Astro.url.pathname)
+const alternateLang = currentLocale === 'bg' ? 'en' : 'bg'
+const alternatePathname = getAlternateUrl(Astro.url.pathname, alternateLang)
+const alternateUrl = Astro.site ? new URL(alternatePathname, Astro.site).toString() : alternatePathname
 ---
 
 <!doctype html>
-<html lang="bg">
+<html lang={lang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -31,6 +38,11 @@ const canonical = canonicalUrl || (Astro.site ? new URL(Astro.url.pathname, Astr
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+
+    <!-- hreflang -->
+    <link rel="alternate" hreflang="bg" href={currentLocale === 'bg' ? canonical : alternateUrl} />
+    <link rel="alternate" hreflang="en" href={currentLocale === 'en' ? canonical : alternateUrl} />
+    <link rel="alternate" hreflang="x-default" href={currentLocale === 'bg' ? canonical : alternateUrl} />
 
     <!-- Open Graph -->
     <meta property="og:title" content={title} />

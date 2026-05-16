@@ -1,7 +1,15 @@
 ---
 import { readSingleton } from '../../lib/content'
+import { getNavItems, getAlternateUrl, ui } from '../../lib/i18n'
+import type { Locale } from '../../lib/i18n'
 import TopBar from './TopBar.astro'
 import MobileMenu from '../islands/MobileMenu.svelte'
+
+interface Props {
+  lang?: Locale
+}
+
+const { lang = 'bg' } = Astro.props
 
 const settings = await readSingleton('settings')
 
@@ -9,27 +17,17 @@ const phone = settings?.phone || '02 997 7194'
 const email = settings?.email || 'bbbankya@abv.bg'
 const hours = settings?.hours || 'Пон – Пет: 08:00 – 18:00'
 
-const navItems = [
-  { label: 'Начало', url: '/' },
-  { label: 'За нас', url: '/za-nas' },
-  {
-    label: 'За пациента',
-    url: '/za-pacienta',
-    subItems: [
-      { label: 'Обща информация', url: '/za-pacienta/obshta-informatsiya' },
-      { label: 'Клинични пътеки', url: '/za-pacienta/klinichni-pateki' },
-      { label: 'НОИ', url: '/za-pacienta/noi' },
-      { label: 'Платен прием', url: '/za-pacienta/platen-priem' },
-      { label: 'Военен контингент', url: '/za-pacienta/voenen-kontingent' },
-    ],
-  },
-  { label: 'Дейности', url: '/deynosti' },
-  { label: 'Галерия', url: '/galeriya' },
-  { label: 'Новини', url: '/novini' },
-  { label: 'Контакти', url: '/kontakti' },
-]
+const navItems = getNavItems(lang)
+const strings = ui[lang]
 
 const currentPath = Astro.url.pathname
+const alternateLang: Locale = lang === 'bg' ? 'en' : 'bg'
+const alternatePath = getAlternateUrl(currentPath, alternateLang)
+const alternateLangLabel = lang === 'bg' ? 'EN' : 'BG'
+const currentLangLabel = lang === 'bg' ? 'BG' : 'EN'
+
+const homeUrl = lang === 'bg' ? '/' : '/en/'
+const contactUrl = lang === 'bg' ? '/kontakti' : '/en/contact'
 ---
 
 <TopBar phone={phone} email={email} hours={hours} />
@@ -39,7 +37,7 @@ const currentPath = Astro.url.pathname
     <div class="flex justify-between items-center h-16">
 
       <!-- Logo -->
-      <a href="/" class="flex items-center gap-2.5 shrink-0">
+      <a href={homeUrl} class="flex items-center gap-2.5 shrink-0">
         {settings?.logo ? (
           <img src={settings.logo} alt={settings.siteName || 'БПЛР–БАНКЯ'} class="h-12 w-auto" />
         ) : (
@@ -85,7 +83,7 @@ const currentPath = Astro.url.pathname
               <a
                 href={item.url}
                 class={`inline-flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors ${
-                  currentPath === item.url || (item.url !== '/' && currentPath.startsWith(item.url))
+                  currentPath === item.url || (item.url !== '/' && item.url !== '/en/' && currentPath.startsWith(item.url))
                     ? 'text-blue-700 bg-blue-50'
                     : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
                 }`}
@@ -97,15 +95,36 @@ const currentPath = Astro.url.pathname
         )}
       </ul>
 
-      <!-- CTA + Mobile toggle -->
-      <div class="flex items-center gap-3">
+      <!-- CTA + Language switcher + Mobile toggle -->
+      <div class="flex items-center gap-2">
+        <!-- Language switcher -->
         <a
-          href="/kontakti"
+          href={alternatePath}
+          class="hidden sm:inline-flex items-center gap-1 px-2.5 py-1.5 text-xs font-semibold rounded-md border border-gray-200 text-gray-600 hover:border-blue-300 hover:text-blue-700 transition-colors"
+          title={alternateLang === 'en' ? 'Switch to English' : 'Превключи на български'}
+        >
+          <span class="text-gray-400">{currentLangLabel}</span>
+          <span class="text-gray-300">/</span>
+          <span>{alternateLangLabel}</span>
+        </a>
+
+        <a
+          href={contactUrl}
           class="hidden lg:inline-flex items-center px-4 py-2 text-sm font-semibold text-white bg-blue-700 rounded-lg hover:bg-blue-800 transition-colors"
         >
-          Свържете се с нас
+          {strings.ctaButton}
         </a>
-        <MobileMenu navItems={navItems} client:load />
+        <MobileMenu
+          navItems={navItems}
+          ctaUrl={contactUrl}
+          ctaLabel={strings.ctaButton}
+          alternatePath={alternatePath}
+          alternateLangLabel={alternateLangLabel}
+          openMenuLabel={strings.openMenu}
+          closeMenuLabel={strings.closeMenu}
+          closeLabel={strings.close}
+          client:load
+        />
       </div>
     </div>
   </nav>
