@@ -1,9 +1,11 @@
 images:
-  - image: /images/gallery/images/0/image.png
+  - image: ''
+    youtubeUrl: ''
     alt: ''
     caption: ''
     category: Сгради
-  - image: /images/gallery/images/1/image.png
+  - image: ''
+    youtubeUrl: ''
     alt: ''
     caption: ''
     category: Природа
