@@ -18,8 +18,7 @@ const [entryData, allEntries] = await Promise.all([
 if (!entryData) return Astro.redirect('/za-pacienta')
 const entry = entryData.entry
 
-// Read and render the .mdoc file directly (strips frontmatter, renders Markdoc to HTML)
-const filePath = path.join(process.cwd(), 'content/patient-info', `${slug}.mdoc`)
+const filePath = path.join(process.cwd(), 'content/patient-info', `${slug}.md`)
 const raw = await fs.readFile(filePath, 'utf8')
 // Strip YAML frontmatter (everything between the first two --- markers)
 const withoutFrontmatter = raw.replace(/^---[\s\S]*?---\s*/, '')

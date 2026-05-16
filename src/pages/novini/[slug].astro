@@ -12,7 +12,7 @@ const postData = await readCollectionEntry('posts', slug!)
 if (!postData) return Astro.redirect('/novini')
 const post = postData.entry
 
-const filePath = path.join(process.cwd(), 'content/posts', `${slug}.mdoc`)
+const filePath = path.join(process.cwd(), 'content/posts', `${slug}.md`)
 const raw = await fs.readFile(filePath, 'utf8')
 const withoutFrontmatter = raw.replace(/^---[\s\S]*?---\s*/, '')
 const ast = Markdoc.parse(withoutFrontmatter)

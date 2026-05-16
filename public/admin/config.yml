@@ -183,7 +183,7 @@ collections:
   - name: posts
     label: Новини
     folder: content/posts
-    extension: mdoc
+    extension: md
     format: frontmatter
     create: true
     slug: '{{slug}}'
@@ -223,7 +223,7 @@ collections:
   - name: services
     label: Дейности
     folder: content/services
-    extension: mdoc
+    extension: md
     format: frontmatter
     create: true
     slug: '{{slug}}'
@@ -237,7 +237,7 @@ collections:
   - name: patient-info
     label: За пациента – Страници
     folder: content/patient-info
-    extension: mdoc
+    extension: md
     format: frontmatter
     create: true
     slug: '{{slug}}'

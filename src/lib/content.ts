@@ -23,12 +23,12 @@ export async function readSingleton(name: string): Promise<Record<string, any> |
 export async function readCollection(name: string): Promise<Array<{ slug: string; entry: Record<string, any> }>> {
   try {
     const dir = path.join(ROOT, 'content', name)
-    const files = (await fs.readdir(dir)).filter(f => f.endsWith('.yaml') || f.endsWith('.mdoc'))
+    const files = (await fs.readdir(dir)).filter(f => f.endsWith('.yaml') || f.endsWith('.md'))
     return Promise.all(
       files.map(async (f) => {
         const raw = await fs.readFile(path.join(dir, f), 'utf8')
         const slug = f.replace(/\.(yaml|mdoc)$/, '')
-        const entry = f.endsWith('.mdoc') ? parseFrontmatter(raw) : (parse(raw) ?? {})
+        const entry = f.endsWith('.md') ? parseFrontmatter(raw) : (parse(raw) ?? {})
         return { slug, entry }
       })
     )
