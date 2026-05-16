@@ -1,7 +1,7 @@
 backend:
   name: github
   repo: boroborovski/bankya-site
-  branch: main
+  branch: content
 
 publish_mode: editorial_workflow
 
