@@ -76,7 +76,7 @@
 
   <!-- Grid -->
   <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-    {#each visible as img, i}
+    {#each visible as img, i (img.src || img.youtubeUrl)}
       {@const ytId = getYouTubeId(img.youtubeUrl)}
       {@const thumbSrc = ytId ? `https://img.youtube.com/vi/${ytId}/hqdefault.jpg` : img.src}
       <button
