@@ -1,15 +1,13 @@
-logo: /images/logo.png
 siteName: БПЛР–БАНКЯ
-siteDescription: >-
-  Болница за продължително лечение и рехабилитация – Банкя. Рехабилитация с
-  природна минерална вода, физиотерапия и специализирани медицински грижи.
-footerDescription: >-
-  Специализирана болница за рехабилитация в Банкя, предлагаща комплексно лечение
-  с природни минерални води и съвременни методи.
-phone: 02 997 7194
-email: bbbankya@abv.bg
-address: гр. Банкя, ул. Цар Симеон № 2, 1320
-hours: 'Пон – Пет: 08:00 – 18:00'
-mapsEmbedUrl: >-
-  https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2932.0261150596884!2d23.144777599999994!3d42.703167799999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40aa990c07e99101%3A0xf317d96000c2c69e!2z0JHQvtC70L3QuNGG0LAg0LfQsCDQv9GA0L7QtNGK0LvQttC40YLQtdC70L3QviDQu9C10YfQtdC90LjQtSDQuCDRgNC10YXQsNCx0LjQu9C40YLQsNGG0LjRjyDQktCc0JAgLSDQkdCw0L3QutGP!5e0!3m2!1sbg!2sbg!4v1776100809147!5m2!1sbg!2sbg
+siteDescription: Болница за продължително лечение и рехабилитация – Банкя. Лечение с минерална вода, луга, физиотерапия и специализирани медицински грижи.
+footerDescription: БПЛР-Банкя към ВМА предлага комплексно лечение с минерална вода, луга и други съвременни методи.
+logo: /images/logo.png
+phone: 02 8127920, 02 997 7194
+email: bbbankya_reg@abv.bg
+address: гр. Банкя, ул. Иван Вазов № 5, 1320
+hours: 'Планиране на прием и информация Пон – Пет: 13,30 – 15:30'
+mapsEmbedUrl: https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2932.0261150596884!2d23.144777599999994!3d42.703167799999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40aa990c07e99101%3A0xf317d96000c2c69e!2z0JHQvtC70L3QuNGG0LAg0LfQsCDQv9GA0L7QtNGK0LvQttC40YLQtdC70L3QviDQu9C10YfQtdC90LjQtSDQuCDRgNC10YXQsNCx0LjQu9C40YLQsNGG0LjRjyDQktCc0JAgLSDQkdCw0L3QutGP!5e0!3m2!1sbg!2sbg!4v1776100809147!5m2!1sbg!2sbg
+mapsLinkUrl: ''
 facebookUrl: https://www.facebook.com
+instagramUrl: ''
+linkedinUrl: ''
