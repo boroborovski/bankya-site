@@ -5,7 +5,7 @@
   let {
     navItems = [],
     ctaUrl = '/kontakti',
-    ctaLabel = 'Свържете се с нас',
+    ctaLabel = '',
     alternatePath = '/',
     alternateLangLabel = 'EN',
     openMenuLabel = 'Отвори меню',
@@ -121,15 +121,17 @@
       </ul>
 
       <!-- CTA -->
-      <div class="px-4 pb-6 pt-2 border-t border-gray-100">
-        <a
-          href={ctaUrl}
-          onclick={() => (open = false)}
-          class="flex justify-center items-center px-4 py-3 text-sm font-semibold text-white bg-blue-700 rounded-xl hover:bg-blue-800 transition-colors"
-        >
-          {ctaLabel}
-        </a>
-      </div>
+      {#if ctaLabel}
+        <div class="px-4 pb-6 pt-2 border-t border-gray-100">
+          <a
+            href={ctaUrl}
+            onclick={() => (open = false)}
+            class="flex justify-center items-center px-4 py-3 text-sm font-semibold text-white bg-blue-700 rounded-xl hover:bg-blue-800 transition-colors"
+          >
+            {ctaLabel}
+          </a>
+        </div>
+      {/if}
     </nav>
   </div>
 {/if}

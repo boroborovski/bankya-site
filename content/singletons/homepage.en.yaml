@@ -1,24 +1,26 @@
 heroSlides:
-  - headline: Rehabilitation with Natural Mineral Water
+  - headline: Comprehensive Treatment and Rehabilitation
     subheadline: >-
-      Hospital for Long-term Treatment in the heart of Bankya — nature, care and
-      modern medicine.
-    ctaLabel: Contact Us
-    ctaUrl: /en/contact
-    secondaryCtaLabel: Learn More
-    secondaryCtaUrl: /en/about
-  - headline: Comprehensive Rehabilitation after Stroke and Trauma
-    subheadline: >-
-      Individual recovery programmes designed by a specialised medical team.
+      Individual treatment programmes designed by a specialised medical team.
     ctaLabel: Our Services
     ctaUrl: /en/activities
-  - headline: Admission via Clinical Pathways and NHIF
+    image: /images/slides/heroSlides/001.jpg
+  - headline: Admission via NHIF, NSSI and Ordinance No. H-2/2021
     subheadline: >-
       Treatment funded by the National Health Insurance Fund and the National
       Social Security Institute.
     ctaLabel: Patient Information
     ctaUrl: /en/patient-info
     image: /images/slides/heroSlides/2/image.jpg
+  - headline: Treatment with Mineral Water, Brine and Preformed Physical Modalities
+    subheadline: >-
+      Hospital for Long-term Treatment in the heart of Bankya — nature, care and
+      modern medicine.
+    ctaLabel: ''
+    ctaUrl: /en/contact
+    secondaryCtaLabel: Learn More
+    secondaryCtaUrl: /en/about
+    image: /images/slides/heroSlides/003.jpg
 showStats: true
 showAbout: true
 showServices: true

@@ -4,7 +4,6 @@ import LandingLayout from '../layouts/LandingLayout.astro'
 import Hero from '../components/sections/Hero.astro'
 import Features from '../components/sections/Features.astro'
 import ContentSection from '../components/sections/ContentSection.astro'
-import CTASection from '../components/sections/CTASection.astro'
 
 const [servicesRaw, pageHeroes] = await Promise.all([
   readCollection('services'),
@@ -39,10 +38,8 @@ const services = servicesRaw.length
   <Hero
     headline={pageHeroes?.deynosti?.headline || 'Нашите дейности'}
     subheadline={pageHeroes?.deynosti?.subheadline || 'Комплексна рехабилитация в Банкя.'}
-    ctaLabel="Свържете се с нас"
-    ctaUrl="/kontakti"
-    secondaryCtaLabel="За пациента"
-    secondaryCtaUrl="/za-pacienta"
+    ctaLabel="За пациента"
+    ctaUrl="/za-pacienta"
   />
 
   <Features
@@ -63,15 +60,5 @@ const services = servicesRaw.length
       'Редовен мониторинг и корекция на терапията',
     ]}
     background="gray"
-  />
-
-  <CTASection
-    heading="Свържете се с нас"
-    body="Свържете се с нас, за да разберете дали БПЛР–Банкя е подходящото място за вашата рехабилитация."
-    ctaLabel="Свържете се с нас"
-    ctaUrl="/kontakti"
-    secondaryCtaLabel="За пациента"
-    secondaryCtaUrl="/za-pacienta"
-    variant="blue"
   />
 </LandingLayout>

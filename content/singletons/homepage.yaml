@@ -1,25 +1,25 @@
 heroSlides:
-  - headline: Лечение с минерална вода, луга, физиотерапия и рехабилитация
-    subheadline: Болница за продължително лечение в сърцето на Банкя — природа, грижа и съвременна медицина.
-    ctaLabel: ''
-    ctaUrl: /kontakti
-    secondaryCtaLabel: Научете повече
-    secondaryCtaUrl: /za-nas
-    image: /images/slides/heroSlides/003.jpg
-  - headline: Комплексна рехабилитация след заболявания на централната и перифеврна нервна система, на сърдечно-съдовата система и заболявания на опорно-двигателния апарат
+  - headline: Комплексно лечение и рехабилитация
     subheadline: Индивидуални програми за лечение, изготвени от специализиран медицински екип.
     ctaLabel: Нашите дейности
     ctaUrl: /deynosti
     secondaryCtaLabel: ''
     secondaryCtaUrl: ''
     image: /images/slides/heroSlides/001.jpg
-  - headline: Прием по договори с НЗОК и НОИ и на лица по Наредба Н-2/2021 година на МО
+  - headline: Прием по НЗОК, НОИ и Наредба № Н-2/2021
     subheadline: Лечение, финансирано от Националната здравноосигурителна каса и Националния осигурителен институт.
     ctaLabel: Информация за пациенти
     ctaUrl: /za-pacienta
     secondaryCtaLabel: ''
     secondaryCtaUrl: ''
     image: /images/slides/heroSlides/2/image.jpg
+  - headline: Лечение с минерална вода, луга и преформирани физикални средства
+    subheadline: Болница за продължително лечение в сърцето на Банкя — природа, грижа и съвременна медицина.
+    ctaLabel: ''
+    ctaUrl: /kontakti
+    secondaryCtaLabel: Научете повече
+    secondaryCtaUrl: /za-nas
+    image: /images/slides/heroSlides/003.jpg
 showStats: true
 showAbout: true
 showServices: true

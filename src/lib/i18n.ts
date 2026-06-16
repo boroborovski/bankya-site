@@ -80,7 +80,6 @@ export function getNavItems(lang: Locale): NavItem[] {
 
 export const ui = {
   bg: {
-    ctaButton: 'Свържете се с нас',
     allNews: 'Всички новини',
     learnMore: 'Научете повече за нас',
     ourSpecialties: 'Нашите специалности',
@@ -91,7 +90,6 @@ export const ui = {
     footerContact: 'Контакти',
     footerRights: 'Всички права запазени.',
     footerTagline: 'Болница за продължително лечение и рехабилитация',
-    footerContactUs: 'Свържете се с нас →',
     openMenu: 'Отвори меню',
     closeMenu: 'Затвори меню',
     close: 'Затвори',
@@ -111,7 +109,6 @@ export const ui = {
     patientInfoNav: 'За пациента',
   },
   en: {
-    ctaButton: 'Contact Us',
     allNews: 'All News',
     learnMore: 'Learn More About Us',
     ourSpecialties: 'Our Services',
@@ -122,7 +119,6 @@ export const ui = {
     footerContact: 'Contact',
     footerRights: 'All rights reserved.',
     footerTagline: 'Hospital for Long-term Treatment and Rehabilitation',
-    footerContactUs: 'Contact Us →',
     openMenu: 'Open menu',
     closeMenu: 'Close menu',
     close: 'Close',

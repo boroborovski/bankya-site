@@ -25,7 +25,6 @@ const hours = settings?.hours || 'Пон – Пет: 08:00 – 18:00'
 const facebookUrl = settings?.facebookUrl || null
 
 const homeUrl = lang === 'bg' ? '/' : '/en/'
-const contactUrl = lang === 'bg' ? '/kontakti' : '/en/contact'
 const patientUrl = lang === 'bg' ? '/za-pacienta' : '/en/patient-info'
 
 // For patient info sub-links in footer
@@ -143,9 +142,6 @@ const mainNavLinks = navItems.filter(item => !item.subItems)
 
     <div class="border-t border-gray-800 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm">
       <p>&copy; {year} {siteName}. {strings.footerRights}</p>
-      <a href={contactUrl} class="text-blue-400 hover:text-blue-300 transition-colors font-medium">
-        {strings.footerContactUs}
-      </a>
     </div>
   </div>
 </footer>

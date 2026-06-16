@@ -2,8 +2,8 @@
 interface Props {
   heading: string
   body?: string
-  ctaLabel: string
-  ctaUrl: string
+  ctaLabel?: string
+  ctaUrl?: string
   secondaryCtaLabel?: string
   secondaryCtaUrl?: string
   variant?: 'blue' | 'light'
@@ -31,12 +31,14 @@ const {
           <p class="mb-8 font-light text-blue-100 sm:text-xl">{body}</p>
         )}
         <div class="flex flex-col sm:flex-row gap-4">
-          <a
-            href={ctaUrl}
-            class="inline-flex items-center justify-center px-6 py-3 text-base font-semibold text-blue-700 bg-white rounded-lg hover:bg-blue-50 focus:ring-4 focus:ring-blue-300 transition-colors"
-          >
-            {ctaLabel}
-          </a>
+          {ctaLabel && ctaUrl && (
+            <a
+              href={ctaUrl}
+              class="inline-flex items-center justify-center px-6 py-3 text-base font-semibold text-blue-700 bg-white rounded-lg hover:bg-blue-50 focus:ring-4 focus:ring-blue-300 transition-colors"
+            >
+              {ctaLabel}
+            </a>
+          )}
           {secondaryCtaLabel && secondaryCtaUrl && (
             <a
               href={secondaryCtaUrl}
@@ -60,12 +62,14 @@ const {
           <p class="mb-8 font-light text-gray-500 sm:text-xl">{body}</p>
         )}
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <a
-            href={ctaUrl}
-            class="inline-flex items-center justify-center px-6 py-3 text-base font-semibold text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 transition-colors"
-          >
-            {ctaLabel}
-          </a>
+          {ctaLabel && ctaUrl && (
+            <a
+              href={ctaUrl}
+              class="inline-flex items-center justify-center px-6 py-3 text-base font-semibold text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 transition-colors"
+            >
+              {ctaLabel}
+            </a>
+          )}
           {secondaryCtaLabel && secondaryCtaUrl && (
             <a
               href={secondaryCtaUrl}

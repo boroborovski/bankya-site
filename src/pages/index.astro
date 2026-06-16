@@ -29,7 +29,7 @@ const slides = homepage?.heroSlides?.length
       {
         headline: 'Рехабилитация с природна минерална вода',
         subheadline: 'Болница за продължително лечение в сърцето на Банкя — природа, грижа и съвременна медицина.',
-        ctaLabel: 'Свържете се с нас',
+        ctaLabel: '',
         ctaUrl: '/kontakti',
         secondaryCtaLabel: 'Научете повече',
         secondaryCtaUrl: '/za-nas',
@@ -141,10 +141,8 @@ const posts = postsRaw.map((p) => ({
     <CTASection
       heading={ctaHeading}
       body={ctaBody}
-      ctaLabel="Свържете се с нас"
-      ctaUrl="/kontakti"
-      secondaryCtaLabel="За пациента"
-      secondaryCtaUrl="/za-pacienta"
+      ctaLabel="За пациента"
+      ctaUrl="/za-pacienta"
       variant="blue"
     />
   )}

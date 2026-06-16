@@ -27,7 +27,6 @@ const alternateLangLabel = lang === 'bg' ? 'EN' : 'BG'
 const currentLangLabel = lang === 'bg' ? 'BG' : 'EN'
 
 const homeUrl = lang === 'bg' ? '/' : '/en/'
-const contactUrl = lang === 'bg' ? '/kontakti' : '/en/contact'
 ---
 
 <TopBar phone={phone} email={email} hours={hours} />
@@ -108,16 +107,8 @@ const contactUrl = lang === 'bg' ? '/kontakti' : '/en/contact'
           <span>{alternateLangLabel}</span>
         </a>
 
-        <a
-          href={contactUrl}
-          class="hidden lg:inline-flex items-center px-4 py-2 text-sm font-semibold text-white bg-blue-700 rounded-lg hover:bg-blue-800 transition-colors"
-        >
-          {strings.ctaButton}
-        </a>
         <MobileMenu
           navItems={navItems}
-          ctaUrl={contactUrl}
-          ctaLabel={strings.ctaButton}
           alternatePath={alternatePath}
           alternateLangLabel={alternateLangLabel}
           openMenuLabel={strings.openMenu}

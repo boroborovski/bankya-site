@@ -2,7 +2,6 @@
 import { readSingleton } from '../lib/content'
 import LandingLayout from '../layouts/LandingLayout.astro'
 import Hero from '../components/sections/Hero.astro'
-import ContactForm from '../components/islands/ContactForm.svelte'
 
 const [pageHeroes, settings] = await Promise.all([
   readSingleton('page-heroes'),
@@ -12,12 +11,10 @@ const [pageHeroes, settings] = await Promise.all([
 const phone   = settings?.phone   || '02 997 7194'
 const email   = settings?.email   || 'bbbankya@abv.bg'
 const address = settings?.address || 'гр. Банкя, ул. „Цар Симеон" № 2, 1320'
-const hours   = settings?.hours   || 'Понеделник – Петък: 08:00 – 18:00'
 const mapsEmbedUrl = settings?.mapsEmbedUrl || 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2935.123!2d23.2695!3d42.7285!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40aa5c0b9e4c0001%3A0x0!2z0JHQsNC90LrRjywg0KHQvtGC0LjRjw!5e0!3m2!1sbg!2sbg!4v1'
 const mapsLinkUrl  = settings?.mapsLinkUrl  || 'https://maps.google.com/?q=Bankya+Sofia'
 
 const phoneHref = `tel:${phone.replace(/\s/g, '')}`
-const [hoursLabel, hoursValue] = hours.includes(':') ? [hours.split(':')[0].trim(), hours.split(/:(.*)/s)[1].trim()] : [hours, '']
 ---
 
 <LandingLayout
@@ -33,11 +30,18 @@ const [hoursLabel, hoursValue] = hours.includes(':') ? [hours.split(':')[0].trim
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
 
-        <!-- Contact form -->
+        <!-- Director reception -->
         <div>
-          <h2 class="text-2xl font-extrabold text-gray-900 mb-2">Изпратете запитване</h2>
-          <p class="text-gray-500 mb-8">Попълнете формата и ще се свържем с вас в рамките на работния ден.</p>
-          <ContactForm client:load />
+          <img
+            src="/images/upravitel.jpg"
+            alt="Управител на БПЛР–Банкя към ВМА"
+            class="w-full rounded-2xl shadow-md mb-6 object-cover"
+          />
+          <h2 class="text-xl font-extrabold text-gray-900 mb-4">За лица, които не са служители на БПЛР-Банкя към ВМА</h2>
+          <div class="space-y-3 text-gray-600">
+            <p>Приемен ден на Управителя на болницата всеки втори четвъртък на месеца от 14:00 часа.</p>
+            <p>Записвания на медицинска регистратура с посочване по какви въпроси е поискана срещата с Управителя.</p>
+          </div>
         </div>
 
         <!-- Info panel -->
@@ -97,11 +101,9 @@ const [hoursLabel, hoursValue] = hours.includes(':') ? [hours.split(':')[0].trim
                 </svg>
               </div>
               <div>
-                <h3 class="font-semibold text-gray-900 mb-0.5">Работно време</h3>
-                {hoursValue
-                  ? <><p class="text-gray-600 text-sm">{hoursLabel}</p><p class="text-blue-700 font-semibold text-sm">{hoursValue}</p></>
-                  : <p class="text-gray-600 text-sm">{hours}</p>
-                }
+                <h3 class="font-semibold text-gray-900 mb-0.5">Работно време на медицинска регистратура</h3>
+                <p class="text-gray-600 text-sm">За планиране на прием: <span class="text-blue-700 font-semibold">13:30 – 15:30 часа</span></p>
+                <p class="text-gray-600 text-sm">За прием: <span class="text-blue-700 font-semibold">7:30 – 11:00 часа</span></p>
               </div>
             </div>
           </div>

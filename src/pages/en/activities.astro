@@ -4,7 +4,6 @@ import LandingLayout from '../../layouts/LandingLayout.astro'
 import Hero from '../../components/sections/Hero.astro'
 import Features from '../../components/sections/Features.astro'
 import ContentSection from '../../components/sections/ContentSection.astro'
-import CTASection from '../../components/sections/CTASection.astro'
 
 const [servicesRaw, pageHeroes] = await Promise.all([
   readCollection('services', 'en'),
@@ -40,10 +39,8 @@ const services = servicesRaw.length
   <Hero
     headline={pageHeroes?.deynosti?.headline || 'Our Services'}
     subheadline={pageHeroes?.deynosti?.subheadline || 'Comprehensive rehabilitation in Bankya.'}
-    ctaLabel="Contact Us"
-    ctaUrl="/en/contact"
-    secondaryCtaLabel="Patient Info"
-    secondaryCtaUrl="/en/patient-info"
+    ctaLabel="Patient Info"
+    ctaUrl="/en/patient-info"
   />
 
   <Features
@@ -64,15 +61,5 @@ const services = servicesRaw.length
       'Regular monitoring and therapy adjustment',
     ]}
     background="gray"
-  />
-
-  <CTASection
-    heading="Get in Touch"
-    body="Contact us to find out whether BPLR–Bankya is the right place for your rehabilitation."
-    ctaLabel="Contact Us"
-    ctaUrl="/en/contact"
-    secondaryCtaLabel="Patient Info"
-    secondaryCtaUrl="/en/patient-info"
-    variant="blue"
   />
 </LandingLayout>
