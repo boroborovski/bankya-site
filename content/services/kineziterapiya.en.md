@@ -1,6 +1,6 @@
 ---
 title: Kinesiotherapy
-summary: Individual and group therapeutic exercises, manual therapy and mechanotherapy in a modern rehabilitation gym.
+summary: Individual and group therapeutic exercises and mechanotherapy in a modern rehabilitation gym.
 icon: movement
 order: 5
 ---
